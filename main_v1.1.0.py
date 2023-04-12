@@ -417,6 +417,12 @@ with tab4:
         st.caption("(KERI map) Office and Lab, building #3 and #5")
     
     st.header(":blue[QR Code]")
+    with st.expander("See QR code (v1.1.0):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-0-abc.streamlit.app.png")
+        st.subheader("https://tematdb-v1-1-main-v1-1-0-abc.streamlit.app/")
+    with st.expander("See QR code (v1.0.2):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-2-abc.streamlit.app.png")
+        # st.header("https://qrco.de/bds6GG/")
     with st.expander("See QR code (v1.0.1):", expanded=False):            
         st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-1-abc.streamlit.app.png")
         # st.header("https://qrco.de/bds6GG/")
