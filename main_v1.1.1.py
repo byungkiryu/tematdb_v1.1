@@ -37,9 +37,6 @@ formattedDate, yyyymmdd, HHMMSS = br.now_string()
 st.title("teMatDb (ver1.1.1)")
 st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]ase")
 st.markdown("- High quality thermoelectric (TE) database (DB).")
-# st.markdown("- Suitable for _transport mechanism_ analysis & _machine learning_ .")
-# st.markdown("- Status: :red[teMatDb ver1.1.0]. Developed by BR @ KER.")
-# st.markdown("- Open :red[Left Sidebar] to choose DB and Mat.")
 
 
 tab1a, tab1b, tab1c, tab2, tab3, tab4 = st.tabs(["ThermoElectric Material", 
@@ -457,6 +454,9 @@ with tab4:
         st.caption("(KERI map) Office and Lab, building #3 and #5")
     
     st.header(":blue[QR Code]")
+    with st.expander("See QR code (v1.1.1):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-1-abc.streamlit.app.png")
+    st.subheader("https://tematdb-v1-1-main-v1-1-1-abc.streamlit.app/")
     with st.expander("See QR code (v1.1.0):", expanded=False):            
         st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-0-abc.streamlit.app.png")
         st.subheader("https://tematdb-v1-1-main-v1-1-0-abc.streamlit.app/")
