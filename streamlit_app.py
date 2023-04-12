@@ -62,7 +62,9 @@ with st.sidebar:
         file_tematdb_metadata_csv = "_tematdb_metadata_v1.1.0-20230412_brjcsjp.xlsx"
         file_tematdb_db_csv       =  "tematdb_v1.1.0_completeTEPset.csv"
         
-        df_db_meta = pd.read_excel("./"+file_tematdb_metadata_csv, sheet_name='list', )
+        df_db_meta0 = pd.read_excel("./"+file_tematdb_metadata_csv, sheet_name='list', )
+        df_db_meta = df_db_meta0
+        # df_db_meta = df_db_meta0.set_index('sampleid')
         df_db_csv = pd.read_csv("./data_csv/"+file_tematdb_db_csv)
         
         file_tematdb_error_csv = "error.csv"
@@ -78,24 +80,28 @@ with st.sidebar:
       
     ## choose sampleid
     st.subheader(":red[Select sampleid]")
-    option_sampleid = list(df_db_meta.sampleid.unique())
+    option_sampleid = list(df_db_meta['sampleid'].unique())
     sampleid = st.selectbox('Select or type sampleid:',
         option_sampleid, index=0,
         label_visibility="collapsed")   
     
-    df_db_meta_sampleid = df_db_meta[ df_db_meta.sampleid == sampleid]
+    df_db_meta_sampleid = df_db_meta[ df_db_meta['sampleid'] == sampleid]
     doi = df_db_meta_sampleid.DOI.iloc[0]
     link_doi = '[DOI: {}](http://www.doi.org/{})'.format(doi,doi)
     st.markdown(link_doi, unsafe_allow_html=True)
     corrauthor = df_db_meta_sampleid.Corresponding_author_main.iloc[0]
+    corrinstitute  = df_db_meta_sampleid.Corresponding_author_institute.iloc[0] 
     corremail  = df_db_meta_sampleid.Corresponding_author_email.iloc[0] 
-    st.markdown("Correspondence: {}  \n(email: {})".format(corrauthor, corremail)) 
+    st.markdown("Correspondence: {}, Email: {}".format(corrauthor, corremail)) 
+    st.markdown("Institute: {}".format(corrinstitute)) 
+    # st.markdown("Email: {}  ".format( corremail)) 
+    
     
     interp_opt = {MatProp.OPT_INTERP:MatProp.INTERP_LINEAR,\
                   MatProp.OPT_EXTEND_LEFT_TO:1,          # ok to 0 Kelvin
                   MatProp.OPT_EXTEND_RIGHT_BY:2000}        # ok to +50 Kelvin from the raw data
     TF_mat_complete, mat = tep_generator_from_excel_files(sampleid, interp_opt)
-    # df_db_csv_sampleid = df_db_csv[ df_db_csv.sampleid == sampleid]
+    # df_db_csv_sampleid = df_db_csv[ df_db_csv['sampleid'] == sampleid]
     # df_alpha = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'alpha']
     # df_rho   = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'rho'  ]
     # df_kappa = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'kappa']
@@ -143,7 +149,7 @@ with tab1a:
  
     ## print material(mat) tep
     st.subheader(":red[Transport Properties] (Table)")
-    df_db_csv_sampleid = df_db_csv[ df_db_csv.sampleid == sampleid]
+    df_db_csv_sampleid = df_db_csv[ df_db_csv['sampleid'] == sampleid]
     if not TF_mat_complete:
         st.write(':red[TEP is invalid because TEP set is incomplete..]')    
     if TF_mat_complete:
@@ -188,7 +194,7 @@ with tab1a:
     if TF_mat_complete:   
         try:
             # file_tematdb_error_csv = "error_20230407_231304.csv"
-            df_db_error_sampleid = df_db_error[ df_db_error.sampleid == sampleid]
+            df_db_error_sampleid = df_db_error[ df_db_error['sampleid'] == sampleid]
         except:
             st.markdown('Yet, no error reports')
         else:            
@@ -198,15 +204,15 @@ with tab1a:
                 st.markdown("**:red[Warning: peak ZT mismatch is larger than 0.1]**")
             else:
                 st.markdown("**:blue[Self-consistent: peak ZT mismatch is smaller than, 0.1]**")
-            st.markdown(":black[Author peak ZT (searched from published ZT data): peak-ZT raw = {:6.2f}]".format(df_db_error_sampleid.peakZT_raw_on_Ts_ZT.iloc[0]))
-            st.markdown(":black[Re-evaulated peak ZT (calculated from interpolated TEPs): peak-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.peakZT_TEP_on_Ts_TEP.iloc[0])) 
+            st.markdown(":black[Raw peak-ZT (from published figure data): peak-ZT raw = {:6.2f}]".format(df_db_error_sampleid.peakZT_raw_on_Ts_ZT.iloc[0]))
+            st.markdown(":black[Calculated peak-ZT (from TEP interpolated): peak-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.peakZT_TEP_on_Ts_TEP.iloc[0])) 
                 
             if ( np.abs( df_db_error_sampleid.davgZT.iloc[0] ) > 0.1 ):
                 st.markdown("**:red[Warning: average ZT mismatch is larger than 0.1]**")
             else:
                 st.markdown("**:blue[Self-consistent: average ZT mismatch is smaller than, 0.1]**")
-            st.markdown(":black[Author avg ZT (calculated from interpolated ZTs): avg ZT raw = {:6.2f}]".format(df_db_error_sampleid.avgZT_raw_on_Ts_ZT.iloc[0]))
-            st.markdown(":black[Re-evaulated avg ZT reevaulated (caculated from interpolated TEPs): avg ZT TEP = {:6.2f}]".format(df_db_error_sampleid.avgZT_TEP_on_Ts_TEP.iloc[0])) 
+            st.markdown(":black[Raw avg-ZT (from published figure data): avg-ZT raw = {:6.2f}]".format(df_db_error_sampleid.avgZT_raw_on_Ts_ZT.iloc[0]))
+            st.markdown(":black[Calculated avg-ZT reevaulated (from TEP interpolated): avg-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.avgZT_TEP_on_Ts_TEP.iloc[0])) 
         
             with st.expander("How to calculateSee Lp errors and etc...:", expanded=False):        
                 st.markdown(":red[error was calculated blah blbah using following equations (to be filled later)]")
@@ -289,7 +295,87 @@ with tab1b:
     st.header(":blue[DataFrame for Error Table]")
     st.write(df_db_error)
     
+    df_to_plotly = df_db_error[ df_db_error.Linf > 0].copy()
+    hover_data = ['sampleid','doi','Corresponding_author_main','davgZT','dpeakZT','L2','L3','errMax','errMin']
     
+    import plotly.express as px    
+    fig = px.scatter(
+        df_to_plotly,
+        x='peakZT_TEP_on_Ts_TEP',
+        y='peakZT_raw_on_Ts_ZT',
+        size='Linf',
+        color='peakZT_raw_on_Ts_ZT',        
+        hover_name="sampleid",
+        hover_data=hover_data
+        )
+    figa = fig
+    st.plotly_chart(figa)
+    st.caption("Peak ZT bias plot: ZT_raw from author publication vs. ZT_TEP from TEP reevalulation")
+
+    fig = px.scatter(
+        df_to_plotly,
+        x='avgZT_TEP_on_Ts_TEP',
+        y='avgZT_raw_on_Ts_ZT',
+        size='Linf',
+        color='peakZT_raw_on_Ts_ZT',        
+        hover_name="sampleid",
+        hover_data=hover_data
+        )
+    figa = fig
+    st.plotly_chart(figa)
+    st.caption("ZT average bias plot: ZT_raw from author publication vs. ZT_TEP from TEP reevalulation")
+    
+    figc = px.scatter(
+        df_to_plotly,
+        x='davgZT',
+        y='dpeakZT',
+        size='L2',
+        color='peakZT_raw_on_Ts_ZT', 
+        hover_name="sampleid",
+        hover_data=hover_data
+        )
+    st.plotly_chart(figc)    
+    st.caption("ZT deviation correlation between d(peakZT) and d(avgZT)")
+        
+    fig = px.scatter(
+        df_to_plotly,
+        x='L2',
+        y='dpeakZT',
+        size='Linf',
+        color='peakZT_raw_on_Ts_ZT',   
+        hover_name="sampleid",
+        hover_data=hover_data
+        )
+    figb = fig
+    st.plotly_chart(figb)
+    st.caption("Error Effect on ZT bias")
+    
+    fig = px.scatter(
+        df_to_plotly,
+        x='L3',
+        y='dpeakZT',
+        size='Linf',
+        color='peakZT_raw_on_Ts_ZT',   
+        hover_name="sampleid",
+        hover_data=hover_data
+        )
+    figb = fig
+    st.plotly_chart(figb)
+    st.caption("Error Effect on ZT bias")    
+    
+    fig = px.scatter(
+        df_to_plotly,
+        x='Linf',
+        y='dpeakZT',
+        # size='Linf',
+        color='peakZT_raw_on_Ts_ZT',   
+        hover_name="sampleid",
+        hover_data=hover_data
+        )
+    figb = fig
+    st.plotly_chart(figb)
+    st.caption("Error Effect on ZT bias")       
+        
     cri_cols = [
                 'davgZT',
                 'dpeakZT',
@@ -307,10 +393,7 @@ with tab1b:
         error_criteria = np.abs( df_db_error[cri_col] > cri_val )
         df_db_error_criteria = df_db_error[ error_criteria ].copy()
         df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
-        # df_db_error_criteria.reset_index(inplace=True, drop=True)
         df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
-        # df_db_error_criteria.drop(columns='index',inplace=True)
-        # df_db_error_criteria1 = df_db_error_criteria    
         
         cri_str = ":blue[Noisy samples: {} > {}]".format(cri_col, cri_val)
         st.header(cri_str)
@@ -318,56 +401,14 @@ with tab1b:
         st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
         st.write(df_db_error_criteria)
         df_db_error_criteria_list.append(df_db_error_criteria)
-        sampleid_list = df_db_error_criteria.sampleid.unique().tolist()
+        sampleid_list = df_db_error_criteria['sampleid'].unique().tolist()
         st.write(sampleid_list)
         # esampleid_list_df_db_error_eriteria = esampleid_list_df_db_error_eriteria + sampleid_list
         del df_db_error_criteria
-        # del 
-    
-    # st.header(":red[Noisy samples: Linf > 0.15]")
-    # error_criteria = error_criteria1
-    # df_db_error_criteria = df_db_error[ error_criteria1 ].copy()
-    # df_db_error_criteria.sort_values(by='Linf',ascending=False, inplace=True)
-    # df_db_error_criteria.reset_index(inplace=True)
-    # df_db_error_criteria1 = df_db_error_criteria    
-    # st.write(df_db_error_criteria1)
-
-    # st.header(":red[Noisy samples: Linf > 0.15]")
-    # error_criteria = error_criteria1
-    # df_db_error_criteria = df_db_error[ error_criteria1 ].copy()
-    # df_db_error_criteria.sort_values(by='Linf',ascending=False, inplace=True)
-    # df_db_error_criteria.reset_index(inplace=True)
-    # df_db_error_criteria1 = df_db_error_criteria    
-    # st.write(df_db_error_criteria1)
-    
-    
-    # sampleids_error_criteria2 = df_db_error[ error_criteria1 ].sampleid.unique()
-    # st.write(sampleids_error_criteria1)
-    
-    # sampleids_error_criteria3 = df_db_error[ error_criteria1 ].sampleid.unique()
-    # st.write(sampleids_error_criteria1)
-    
-    
-    # if not TF_mat_complete:
-    #     st.write(':red[TEP is invalid because TEP set is incomplete..]')    
-    # if TF_mat_complete:   
-    # try:
-    #     # file_tematdb_error_csv = "error_20230407_231304.csv"
-    #     file_tematdb_error_csv = "error.csv"
-    #     df_db_error = pd.read_csv("./data_error_analysis/"+file_tematdb_error_csv)
-    #     # df_db_error_sampleid = df_db_error[ df_db_error.sampleid == sampleid]
-    # except:
-    #     st.markdown('Yet, no error reports')
-    # else:            
-    #     st.write(df_db_error)
-        
-
-    
     
     
 with tab1c:  
     st.header(":red[tab1c to be made]")  
-        # st.write(dev.report())
 
 with tab2:
     st.header(":blue[Data sources]")
@@ -392,7 +433,6 @@ with tab3:
     st.subheader("Alloy Design DB (v0.33)")
     st.write(":blue[https://byungkiryu-alloydesigndb-demo-v0-33-main-v0-33-u86ejf.streamlit.app/]")
     
-
 with tab4:
    
     st.header(":blue[KERI Thermoelectric Science TEAM]")
@@ -428,7 +468,4 @@ with tab4:
         # st.header("https://qrco.de/bds6GG/")
     with st.expander("See QR code (v1.0.0):", expanded=False):            
         st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-0-abc.streamlit.app.png")
-        # st.header("https://qrco.de/bds6GG/")
-        
-        
-    # st.image("Where is Changwon")
+
