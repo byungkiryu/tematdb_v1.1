@@ -85,7 +85,7 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
         ax.set_title(tep_title)
         ax.legend()
     def draws_interp_ZT():
-        ax.scatter( X_raw, Y_raw, label="Raw $ZT$ digitized\n(author declared)",color='C1')
+        ax.scatter( X_raw, Y_raw, label="Raw $ZT$ digitized\n(from ZT figure)",color='C1')
         ax.plot( Ts, tep_interp, linewidth=10, alpha=0.35,label="Calculated $ZT$ \n(from TEP interpolated)",color='C2')
         ax.set_title(tep_title)
         ax.legend()
