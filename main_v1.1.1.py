@@ -34,7 +34,7 @@ from library.dev_performance import set_singleleg_device, run_pykeri, draw_dev_p
 formattedDate, yyyymmdd, HHMMSS = br.now_string()
 
 
-st.title("teMatDb (ver1.1.0)")
+st.title("teMatDb (ver1.1.1)")
 st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]ase")
 st.markdown("- High quality thermoelectric (TE) database (DB).")
 # st.markdown("- Suitable for _transport mechanism_ analysis & _machine learning_ .")
