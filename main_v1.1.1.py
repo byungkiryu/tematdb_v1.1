@@ -14,6 +14,9 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from matplotlib import pyplot as plt
+import scipy.stats as stats  
+
 from datetime import datetime
 
 from pykeri.scidata.matprop import MatProp
@@ -26,6 +29,8 @@ from pykeri.thermoelectrics.solver1d.device import Device
 
 from pykeri.byungkiryu import byungkiryu_util as br
 
+
+        
 from library.tematdb_util import get_Ts_TEPZT
 from library.tematdb_util import draw_mat_teps, tep_generator_from_excel_files
 from library.draw_ZT_errors_with_mat import draw_mat_ZT_errors
@@ -39,11 +44,14 @@ st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]as
 st.markdown("- High quality thermoelectric (TE) database (DB).")
 
 
-tab1a, tab1b, tab1c, tab2, tab3, tab4 = st.tabs(["ThermoElectric Material", 
-                                                 "Database quality", 
-                                                 "Efficiency", "Theory", "Link", "Contact"])
+tab0, tab1a, tab1b, tab2, tab3, tab4 = st.tabs(["ThermoElectric Material", 
+                                                 "Database Self-Consistency", 
+                                                 "Data Distribution", "Theory", "Link", "Contact"])
 
 
+  
+    
+    
 ###############
 ###############
 ###############
@@ -61,8 +69,13 @@ with st.sidebar:
         
         df_db_meta0 = pd.read_excel("./"+file_tematdb_metadata_csv, sheet_name='list', )
         df_db_meta = df_db_meta0
-        # df_db_meta = df_db_meta0.set_index('sampleid')
-        df_db_csv = pd.read_csv("./data_csv/"+file_tematdb_db_csv)
+        df_db_meta.index = list(df_db_meta.sampleid.copy())
+        
+        df_db_csv = pd.read_csv("./data_csv/"+file_tematdb_db_csv)        
+        
+        df_db_extended_csv = pd.read_csv("./data_csv/"+"tematdb_v1.1.0_extendedTEPset.csv")
+        df_db_extended_csv = df_db_extended_csv[ df_db_extended_csv.is_Temp_in_autoTcTh_range ]
+        df_db_extended_csv = df_db_extended_csv[ df_db_extended_csv.is_Temp_in_ZT_author_declared ] 
         
         file_tematdb_error_csv = "error.csv"
         df_db_error0 = pd.read_csv("./data_error_analysis/"+file_tematdb_error_csv)
@@ -71,6 +84,7 @@ with st.sidebar:
                'Corresponding_author_email', 'figure_number_of_targetZT',
                'label_of_targetZT_in_figure', 'figure_label_description',]
         df_db_error = pd.merge( df_db_error0, df_db_meta[err_cols], on='sampleid', how='left')
+        df_db_error.index = list(df_db_error.sampleid.copy())
         
     else:
         pass
@@ -98,29 +112,40 @@ with st.sidebar:
                   MatProp.OPT_EXTEND_LEFT_TO:1,          # ok to 0 Kelvin
                   MatProp.OPT_EXTEND_RIGHT_BY:2000}        # ok to +50 Kelvin from the raw data
     TF_mat_complete, mat = tep_generator_from_excel_files(sampleid, interp_opt)
-    # df_db_csv_sampleid = df_db_csv[ df_db_csv['sampleid'] == sampleid]
-    # df_alpha = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'alpha']
-    # df_rho   = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'rho'  ]
-    # df_kappa = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'kappa']
-    # df_ZT    = df_db_csv_sampleid[ df_db_csv_sampleid.tepname == 'ZT'   ]
-    # try:
-    #     mat = TEProp_df.load_from_df(df_alpha, df_rho, df_kappa, df_ZT, mat_name='test')
-    #     mat.set_interp_opt(interp_opt)
-    #     TF_mat_complete = True
-    # except:
-    #     TF_mat_complete = False
-        
 
     label_db = "DB: {}".format(db_mode)
     label_sampleid = "sampleid: {}".format(sampleid)
     label_doi = '[DOI: {}]'.format(doi)    
+    
+    st.subheader(":red[Data Filter]")
+    
+    with st.form("Data Error Filter Criteria"):
+        
+        cri_cols = ['davgZT', 'dpeakZT','Linf']
+        cri_vals = [0.15, 0.15, 0.15]
+        
+        cri_vals0 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[0]),
+                                      min_value = 0.02, value=cri_vals[0],step=0.05)
+        cri_vals1 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[1]),
+                                      min_value = 0.02, value=cri_vals[1],step=0.05)
+        cri_vals2 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[2]),
+                                      min_value = 0.02, value=cri_vals[2],step=0.05)
+        
+        submitted = st.form_submit_button("Submit criteria")
+        
+        if submitted:                   
+            cri_vals[0] = cri_vals0
+            cri_vals[1] = cri_vals1
+            cri_vals[2] = cri_vals2
+        else:
+            cri_vals = [0.10, 0.10, 0.10]
 
 
 ###############
 ###############
 ###############
 ## Material data for given sampleid
-with tab1a:  
+with tab0:  
     ## Read mat, TEP
     # st.header("[db_mode  = :blue[{}]]".format(db_mode) )
     st.header(":blue[I. DB MetaData Table]")
@@ -288,124 +313,228 @@ with tab1a:
 ###############
 ###############
 ## DB Stat
-with tab1b:       
+with tab1a:     
+
     st.header(":blue[DataFrame for Error Table]")
     st.write(df_db_error)
     
-    df_to_plotly = df_db_error[ df_db_error.Linf > 0].copy()
-    hover_data = ['sampleid','doi','Corresponding_author_main','davgZT','dpeakZT','L2','L3','errMax','errMin']
+    st.header(":blue[Error Analysis based on ZT self-consistency]")
+    with st.expander("See analysis:", expanded=True): 
+        # cri_cols = ['davgZT', 'dpeakZT','Linf']
+        # cri_vals = [0.10, 0.10, 0.10]
+        
+        df_db_error_criteria_list = []
+        error_criteria_list = []
+        sampleid_list_df_db_error_criteria = []
+        for cri_col, cri_val in zip(cri_cols, cri_vals):   
+            error_criteria = np.abs( df_db_error[cri_col] ) > cri_val 
+            error_criteria_list.append(error_criteria.copy())
+            df_db_error_criteria = df_db_error[ error_criteria ].copy()
+            df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
+            df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
+            
+            cri_str = ":red[Noisy samples: {} > {}]".format(cri_col, cri_val)
+            st.subheader(cri_str)
+            # st.header(":red[Noisy samples: {} > {}]".format(cri_col, cri_val))  
+            st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
+            st.write(df_db_error_criteria)
+            df_db_error_criteria_list.append(df_db_error_criteria)
+            sampleid_list = df_db_error_criteria['sampleid'].unique().tolist()
+            st.write(sampleid_list)
+            sampleid_list_df_db_error_criteria = sampleid_list_df_db_error_criteria + sampleid_list
+            del df_db_error_criteria
     
-    import plotly.express as px    
-    fig = px.scatter(
-        df_to_plotly,
-        x='peakZT_TEP_on_Ts_TEP',
-        y='peakZT_raw_on_Ts_ZT',
-        size='Linf',
-        color='peakZT_raw_on_Ts_ZT',        
-        hover_name="sampleid",
-        hover_data=hover_data
-        )
-    figa = fig
-    st.plotly_chart(figa)
-    st.caption("Peak ZT bias plot: ZT_raw from author publication vs. ZT_TEP from TEP reevalulation")
+    st.header(":blue[DB Before Filtering]")
+    with st.expander("See plots:", expanded=True):   
+        df1 = df_db_extended_csv
+        df2 = df_db_error
+        
+        st.subheader(":red[ZT Error Correlation]")
+        def draw_ZT_error_correlation(df_db_error):
+            df_to_plotly = df_db_error[ df_db_error.Linf > 0].copy()
+            hover_data = ['sampleid','doi','Corresponding_author_main','davgZT','dpeakZT','L2','L3','errMax','errMin']
+            
+            import plotly.express as px    
+            fig = px.scatter(
+                df_to_plotly,
+                x='peakZT_TEP_on_Ts_TEP',
+                y='peakZT_raw_on_Ts_ZT',
+                size='Linf',
+                color='peakZT_raw_on_Ts_ZT',        
+                hover_name="sampleid",
+                hover_data=hover_data
+                )
+            figa = fig
+            st.plotly_chart(figa)
+            st.caption("Peak ZT bias plot: ZT_raw from author publication vs. ZT_TEP from TEP reevalulation. Size is Linf. Color is peakZT_raw_on_Ts_ZT.")
+        
+            fig = px.scatter(
+                df_to_plotly,
+                x='avgZT_TEP_on_Ts_TEP',
+                y='avgZT_raw_on_Ts_ZT',
+                size='Linf',
+                color='peakZT_raw_on_Ts_ZT',        
+                hover_name="sampleid",
+                hover_data=hover_data
+                )
+            figa = fig
+            st.plotly_chart(figa)
+            st.caption("ZT average bias plot: ZT_raw from author publication vs. ZT_TEP from TEP reevalulation. Size is Linf. Color is peakZT_raw_on_Ts_ZT.")
+            
+            figc = px.scatter(
+                df_to_plotly,
+                x='davgZT',
+                y='dpeakZT',
+                size='Linf',
+                color='peakZT_raw_on_Ts_ZT', 
+                hover_name="sampleid",
+                hover_data=hover_data
+                )
+            st.plotly_chart(figc)    
+            st.caption("ZT deviation correlation between d(peakZT) and d(avgZT). Size is Linf. Color is peakZT_raw_on_Ts_ZT.")
+                
+            fig = px.scatter(
+                df_to_plotly,
+                x='L2',
+                y='dpeakZT',
+                size='Linf',
+                color='peakZT_raw_on_Ts_ZT',   
+                hover_name="sampleid",
+                hover_data=hover_data
+                )
+            figb = fig
+            st.plotly_chart(figb)
+            st.caption("Error Effect on ZT bias. Size is Linf. Color is peakZT_raw_on_Ts_ZT. Size is Linf. Color is peakZT_raw_on_Ts_ZT.")
+            
+            fig = px.scatter(
+                df_to_plotly,
+                x='L3',
+                y='dpeakZT',
+                size='Linf',
+                color='peakZT_raw_on_Ts_ZT',   
+                hover_name="sampleid",
+                hover_data=hover_data
+                )
+            figb = fig
+            st.plotly_chart(figb)
+            st.caption("Error Effect on ZT bias")    
+            
+            fig = px.scatter(
+                df_to_plotly,
+                x='Linf',
+                y='dpeakZT',
+                # size='Linf',
+                color='peakZT_raw_on_Ts_ZT',   
+                hover_name="sampleid",
+                hover_data=hover_data
+                )
+            figb = fig
+            st.plotly_chart(figb)
+            st.caption("Error Effect on ZT bias")           
+        draw_ZT_error_correlation(df2)
+        
 
-    fig = px.scatter(
-        df_to_plotly,
-        x='avgZT_TEP_on_Ts_TEP',
-        y='avgZT_raw_on_Ts_ZT',
-        size='Linf',
-        color='peakZT_raw_on_Ts_ZT',        
-        hover_name="sampleid",
-        hover_data=hover_data
-        )
-    figa = fig
-    st.plotly_chart(figa)
-    st.caption("ZT average bias plot: ZT_raw from author publication vs. ZT_TEP from TEP reevalulation")
-    
-    figc = px.scatter(
-        df_to_plotly,
-        x='davgZT',
-        y='dpeakZT',
-        size='L2',
-        color='peakZT_raw_on_Ts_ZT', 
-        hover_name="sampleid",
-        hover_data=hover_data
-        )
-    st.plotly_chart(figc)    
-    st.caption("ZT deviation correlation between d(peakZT) and d(avgZT)")
+    def draw3QQ(df1,df2):       
         
-    fig = px.scatter(
-        df_to_plotly,
-        x='L2',
-        y='dpeakZT',
-        size='Linf',
-        color='peakZT_raw_on_Ts_ZT',   
-        hover_name="sampleid",
-        hover_data=hover_data
-        )
-    figb = fig
-    st.plotly_chart(figb)
-    st.caption("Error Effect on ZT bias")
+        # figsize = (6,6) 
+        # fig, axs = plt.subplots(2,2,figsize=figsize, sharex=True, constrained_layout=True )  
+        # (ax1, ax2), (ax3, ax4) = axs 
     
-    fig = px.scatter(
-        df_to_plotly,
-        x='L3',
-        y='dpeakZT',
-        size='Linf',
-        color='peakZT_raw_on_Ts_ZT',   
-        hover_name="sampleid",
-        hover_data=hover_data
-        )
-    figb = fig
-    st.plotly_chart(figb)
-    st.caption("Error Effect on ZT bias")    
-    
-    fig = px.scatter(
-        df_to_plotly,
-        x='Linf',
-        y='dpeakZT',
-        # size='Linf',
-        color='peakZT_raw_on_Ts_ZT',   
-        hover_name="sampleid",
-        hover_data=hover_data
-        )
-    figb = fig
-    st.plotly_chart(figb)
-    st.caption("Error Effect on ZT bias")       
+        figsize = (12,3) 
+        # fig, axs = plt.subplots(1,3,figsize=figsize, sharex=True, constrained_layout=True )  
+        fig, axs = plt.subplots(1,3,figsize=figsize, sharex=True,  )  
+        fig.subplots_adjust(wspace=0.5, hspace=0.4)
+        (ax1, ax2, ax3) = axs 
         
-    cri_cols = [
-                'davgZT',
-                'dpeakZT',
-                'Linf',
-                ]
-    cri_vals = [
-                0.10,
-                0.10,
-                0.10,
-                ]
+        ax = ax1
+        tep_title = r'Q-Q plot of $ZT$ deviation'
+        X = df1.ZT_author_declared - df1.ZT_tep_reevaluated
+        stats.probplot(X,dist=stats.norm, plot=ax, rvalue=True)     
+        ax.set_ylabel(r"$\delta$($ZT$)")
+        Xlim = max( np.abs(X) ) 
+        Xlim2 = (math.ceil(Xlim/0.1)+0.0) *0.1
+        # Xrange = np.arange(-Xlim2, Xlim2+0.05,0.1)
+        Xlim3 = Xlim2 *1.1
+        ax.set_ylim(-Xlim3,Xlim3)
+        ax.set_xlim(-4.5,4.5)
+        ax.xaxis.set_ticks_position('both')
+        ax.yaxis.set_ticks_position('both')
+        ax.xaxis.set_tick_params(which='both', labelbottom=True)
+        ax.yaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.legend(loc=2)
+        ax.set_title(tep_title)
+
+
+        ax = ax2
+        tep_title = r'Q-Q plot of avg-$ZT$ deviation'
+        X = df2.dropna(axis=0,subset='davgZT').davgZT
+        stats.probplot(X,dist=stats.norm, plot=ax, rvalue=True)    
+        ax.set_ylabel(r"$\delta$(avg-$ZT$)")    
+        Xlim = max( np.abs(X) ) 
+        Xlim2 = (math.ceil(Xlim/0.1)+0.0) *0.1
+        # Xrange = np.arange(-Xlim2, Xlim2+0.05,0.1)
+        Xlim3 = Xlim2 *1.1
+        ax.set_ylim(-Xlim3,Xlim3)
+        ax.set_xlim(-4.5,4.5)
+        ax.xaxis.set_ticks_position('both')
+        ax.yaxis.set_ticks_position('both')
+        ax.xaxis.set_tick_params(which='both', labelbottom=True)
+        ax.yaxis.set_tick_params(which='both', labelbottom=True)
+        ax.set_title(tep_title)
+        # ax.subplots_adjust(left=0.2, bottom=0.2,  right=0.8, top=0.8, wspace=0.3, hspace=0.35)
     
-    df_db_error_criteria_list = []
-    esampleid_list_df_db_error_eriteria = []
-    for cri_col, cri_val in zip(cri_cols, cri_vals):   
-        error_criteria = np.abs( df_db_error[cri_col] > cri_val )
-        df_db_error_criteria = df_db_error[ error_criteria ].copy()
-        df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
-        df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
+        ax = ax3
+        tep_title = r'Q-Q plot of peak-$ZT$ deviation'
+        X = df2.dropna(axis=0,subset='dpeakZT').dpeakZT
+        stats.probplot(X,dist=stats.norm, plot=ax, rvalue=True)    
+        ax.set_ylabel(r"$\delta$(peak-$ZT$)")    
+        Xlim = max( np.abs(X) ) 
+        Xlim2 = (math.ceil(Xlim/0.1)+0.0) *0.1
+        # Xrange = np.arange(-Xlim2, Xlim2+0.05,0.1)
+        Xlim3 = Xlim2 *1.1
+        ax.set_ylim(-Xlim3,Xlim3)
+        ax.set_xlim(-4.5,4.5)
+        ax.xaxis.set_ticks_position('both')
+        ax.yaxis.set_ticks_position('both')
+        ax.xaxis.set_tick_params(which='both', labelbottom=True)
+        ax.yaxis.set_tick_params(which='both', labelbottom=True)
+        ax.set_title(tep_title)
+        # fig.tight_layout()
+        return fig
+    
+    st.subheader(":red[QQ analysis]")
+    fig_before_filter = draw3QQ(df1,df2)
+    st.pyplot(fig_before_filter)
+
+    st.header(":blue[DB After Filtering]")
+    with st.expander("See plots:", expanded=True):   
+        # df1 = df_db_extended_csv.copy()
         
-        cri_str = ":blue[Noisy samples: {} > {}]".format(cri_col, cri_val)
-        st.header(cri_str)
-        # st.header(":red[Noisy samples: {} > {}]".format(cri_col, cri_val))  
-        st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
-        st.write(df_db_error_criteria)
-        df_db_error_criteria_list.append(df_db_error_criteria)
-        sampleid_list = df_db_error_criteria['sampleid'].unique().tolist()
-        st.write(sampleid_list)
-        # esampleid_list_df_db_error_eriteria = esampleid_list_df_db_error_eriteria + sampleid_list
-        del df_db_error_criteria
-    
-    
-with tab1c:  
+        # df2 = df_db_error
+        df4 = df_db_error[ df_db_error.Linf > 0].copy()
+        df4 = df4[ error_criteria_list[0] != True]
+        df4 = df4[ error_criteria_list[1] != True]
+        df4 = df4[ error_criteria_list[2] != True]
+        df4 = df4.copy()
+        df4['notNoisy'] = True
+        
+        df3 = pd.merge( df_db_extended_csv, df4[['sampleid','notNoisy']], on='sampleid', how='left')
+        df3 = df3[ df3.notNoisy == True ].copy()
+        
+        st.subheader(":red[ZT Error Correlation]")
+        draw_ZT_error_correlation(df4)
+
+    st.subheader(":red[QQ analysis]")
+    fig_after_filter = draw3QQ(df3,df4)
+    st.pyplot(fig_after_filter)      
+
+    # fig_after_filter = draw3QQ(df3,df4)
+    # st.pyplot(fig_after_filter)    
+
+with tab1b:  
     st.header(":red[tab1c to be made]")  
+    
+    
 
 with tab2:
     st.header(":blue[Data sources]")
@@ -430,8 +559,7 @@ with tab3:
     st.subheader("Alloy Design DB (v0.33)")
     st.write(":blue[https://byungkiryu-alloydesigndb-demo-v0-33-main-v0-33-u86ejf.streamlit.app/]")
     
-with tab4:
-   
+with tab4:   
     st.header(":blue[KERI Thermoelectric Science TEAM]")
     with st.expander("See Members:", expanded=False):   
         st.subheader("SuDong Park, Dr. (박수동)")
@@ -456,7 +584,7 @@ with tab4:
     st.header(":blue[QR Code]")
     with st.expander("See QR code (v1.1.1):", expanded=False):            
         st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-1-abc.streamlit.app.png")
-    st.subheader("https://tematdb-v1-1-main-v1-1-1-abc.streamlit.app/")
+        st.subheader("https://tematdb-v1-1-main-v1-1-1-abc.streamlit.app/")
     with st.expander("See QR code (v1.1.0):", expanded=False):            
         st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-0-abc.streamlit.app.png")
         st.subheader("https://tematdb-v1-1-main-v1-1-0-abc.streamlit.app/")
