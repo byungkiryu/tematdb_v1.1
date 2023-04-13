@@ -39,8 +39,8 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     fig2, axs2  = plt.subplots(2,2, figsize=figsize)
     (ax1, ax2), (ax3, ax4) = axs1
     (ax5, ax6), (ax7, ax8) = axs2
-    fig1.subplots_adjust(wspace=0.3, hspace=0.3)
-    fig2.subplots_adjust(wspace=0.3, hspace=0.3)
+    fig1.subplots_adjust(wspace=0.1, hspace=0.3)
+    fig2.subplots_adjust(wspace=0.1, hspace=0.3)
     
     suptitle = "{} {} {}".format(label_db, label_sampleid, label_doi)
     fig1.suptitle(suptitle)
@@ -108,8 +108,8 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     Y_raw = tep_array_raw[1]*1e3
     draws_interp_raw()
     ax.set_ylabel(r"$\alpha$ [$mV \cdot K^{-1}$]")
-    # ax.yaxis.tick_right()
-    # ax.yaxis.set_label_position("right")
+    ax.yaxis.tick_right()
+    ax.yaxis.set_label_position("right")
 
     ax = ax3
     tep_title = r'Thermal Conductivity: $\kappa$'
@@ -128,8 +128,8 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     Y_raw = tep_array_raw[1]  
     draws_interp_ZT()
     ax.set_ylabel(r"$ZT$ [1]")
-    # ax.yaxis.tick_right()
-    # ax.yaxis.set_label_position("right")
+    ax.yaxis.tick_right()
+    ax.yaxis.set_label_position("right")
     
     
     ax = ax5
@@ -149,8 +149,8 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     # Y_raw = tep_array_raw[1]*1e3  
     draws_interp_only()
     ax.set_ylabel(r"$\alpha^2 \sigma$ [$mW \cdot m^{-1} \cdot K^{-2}$]")
-    # ax.yaxis.tick_right()
-    # ax.yaxis.set_label_position("right")
+    ax.yaxis.tick_right()
+    ax.yaxis.set_label_position("right")
     
     ax = ax7 
     tep_title = r'RK: $\rho \kappa$'
@@ -159,7 +159,7 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     # X_raw = tep_array_raw[0]
     # Y_raw = tep_array_raw[1]  
     draws_interp_only()
-    ax.set_ylabel(r'$\rho  \kappa$ [$W \cdot \Omega \cdot K^{-1}$]')
+    ax.set_ylabel(r'$\rho \kappa$ [$W \cdot \Omega \cdot K^{-1}$]')
 
     ax = ax8
     tep_title = r'Lorenz number: $L = \rho \kappa_{\rm tot}  T^{-1}$'
@@ -168,9 +168,9 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     # X_raw = tep_array_raw[0]
     # Y_raw = tep_array_raw[1]  *1e8
     draws_interp_only()
-    ax.set_ylabel(r'$L$ [$10^8$ $W \cdot \Omega \cdot K^{-2}]$')
-    # ax.yaxis.tick_right()
-    # ax.yaxis.set_label_position("right")
+    ax.set_ylabel(r'$L$ [$10^{-8}$ $W \cdot \Omega \cdot K^{-2}]$')
+    ax.yaxis.tick_right()
+    ax.yaxis.set_label_position("right")
     
     
     TcLowerP = min(TcZT, TcTEP, TcTEPZT)
@@ -183,8 +183,8 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
         ax.set_xlabel(r"Temperature [$K$]")  
         ax.xaxis.set_ticks_position('both')
         ax.yaxis.set_ticks_position('both')
-        ax.xaxis.set_tick_params(which='both', direction='in', labelbottom=True)
-        ax.yaxis.set_tick_params(which='both', direction='in', labelbottom=True)
+        ax.xaxis.set_tick_params(which='both', direction='in')
+        ax.yaxis.set_tick_params(which='both', direction='in')
         ax.legend()
     return fig1, fig2
 
