@@ -186,23 +186,21 @@ with st.sidebar:
     with st.form("Data Error Filter Criteria"):
         
         cri_cols = ['davgZT', 'dpeakZT','Linf']
-        cri_vals = [0.15, 0.15, 0.15]
+        cri_vals_def = (0.15, 0.15, 0.15)
         
         cri_vals0 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[0]),
-                                      min_value = 0.02, value=cri_vals[0],step=0.05)
+                                      min_value = 0.02, value=cri_vals_def[0],step=0.05)
         cri_vals1 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[1]),
-                                      min_value = 0.02, value=cri_vals[1],step=0.05)
+                                      min_value = 0.02, value=cri_vals_def[1],step=0.05)
         cri_vals2 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[2]),
-                                      min_value = 0.02, value=cri_vals[2],step=0.05)
+                                      min_value = 0.02, value=cri_vals_def[2],step=0.05)
         
         submitted = st.form_submit_button("Submit criteria")
         
         if submitted:                   
-            cri_vals[0] = cri_vals0
-            cri_vals[1] = cri_vals1
-            cri_vals[2] = cri_vals2
+            cri_vals = [cri_vals0, cri_vals1, cri_vals2]
         else:
-            cri_vals = [0.10, 0.10, 0.10]
+            cri_vals = cri_vals_def
 
 
 ###############
