@@ -59,7 +59,10 @@ def error_analysis(sampleid):
     
     # for sampleid in sampleid_list:
     sampleid_errLnorm_dict = dict()
-    if not TF_mat_complete:
+    if not TF_mat_complete:        
+        doi, doilink = get_doi(sampleid)    
+        sampleid_errLnorm_dict['doi'] = doi
+        sampleid_errLnorm_dict['doilink']  = doilink
         sampleid_errLnorm_dict['sampleid'] = sampleid
         sampleid_errLnorm_dict['TF_mat_complete'] = False
     else:
