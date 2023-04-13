@@ -563,10 +563,10 @@ with tab2:
         Xlim3 = Xlim2 *1.1
         ax.set_ylim(-Xlim3,Xlim3)
         ax.set_xlim(-4.5,4.5)
-        ax.xaxis.set_ticks_position('both')
-        ax.yaxis.set_ticks_position('both')
-        ax.xaxis.set_tick_params(which='both', labelbottom=True)
-        ax.yaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.xaxis.set_ticks_position('both')
+        # ax.yaxis.set_ticks_position('both')
+        # ax.xaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.yaxis.set_tick_params(which='both', labelbottom=True)
         # ax.legend(loc=2)
         ax.set_title(tep_title)
 
@@ -582,10 +582,10 @@ with tab2:
         Xlim3 = Xlim2 *1.1
         ax.set_ylim(-Xlim3,Xlim3)
         ax.set_xlim(-4.5,4.5)
-        ax.xaxis.set_ticks_position('both')
-        ax.yaxis.set_ticks_position('both')
-        ax.xaxis.set_tick_params(which='both', labelbottom=True)
-        ax.yaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.xaxis.set_ticks_position('both')
+        # ax.yaxis.set_ticks_position('both')
+        # ax.xaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.yaxis.set_tick_params(which='both', labelbottom=True)
         ax.set_title(tep_title)
         # ax.subplots_adjust(left=0.2, bottom=0.2,  right=0.8, top=0.8, wspace=0.3, hspace=0.35)
     
@@ -600,14 +600,16 @@ with tab2:
         Xlim3 = Xlim2 *1.1
         ax.set_ylim(-Xlim3,Xlim3)
         ax.set_xlim(-4.5,4.5)
-        ax.xaxis.set_ticks_position('both')
-        ax.yaxis.set_ticks_position('both')
-        ax.xaxis.set_tick_params(which='both', labelbottom=True)
-        ax.yaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.xaxis.set_ticks_position('both')
+        # ax.yaxis.set_ticks_position('both')
+        # ax.xaxis.set_tick_params(which='both', labelbottom=True)
+        # ax.yaxis.set_tick_params(which='both', labelbottom=True)
         ax.set_title(tep_title)
         # fig.tight_layout()
         
         for ax in (ax1, ax2, ax3):
+            ax.xaxis.set_ticks_position('both')
+            ax.yaxis.set_ticks_position('both')
             ax.xaxis.set_tick_params(which='both', direction='in', labelbottom=True)
             ax.yaxis.set_tick_params(which='both', direction='in', labelbottom=True)        
         return fig
