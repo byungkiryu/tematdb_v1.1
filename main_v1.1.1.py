@@ -184,17 +184,15 @@ with st.sidebar:
     st.subheader(":red[Data Filter]")
     
     with st.form("Data Error Filter Criteria"):
-        
+        st.markdown("Minimum value: 0.1. The data larger than ths will be filtered out")
         cri_cols = ['davgZT', 'dpeakZT','Linf']
-        cri_vals_def = (0.15, 0.15, 0.15)
-        
+        cri_vals_def = [0.1, 0.1, 0.1]
         cri_vals0 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[0]),
-                                      min_value = 0.02, value=cri_vals_def[0],step=0.05)
+                                      min_value = 0.01, value=cri_vals_def[0],step=0.05)
         cri_vals1 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[1]),
-                                      min_value = 0.02, value=cri_vals_def[1],step=0.05)
+                                      min_value = 0.01, value=cri_vals_def[1],step=0.05)
         cri_vals2 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[2]),
-                                      min_value = 0.02, value=cri_vals_def[2],step=0.05)
-        
+                                      min_value = 0.01, value=cri_vals_def[2],step=0.05)        
         submitted = st.form_submit_button("Submit criteria")
         
         if submitted:                   
