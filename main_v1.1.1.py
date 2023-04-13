@@ -38,6 +38,8 @@ from library.dev_performance import set_singleleg_device, run_pykeri, draw_dev_p
 
 formattedDate, yyyymmdd, HHMMSS = br.now_string()
 
+st.set_page_config(page_title="teMatDb_v1.1.1")
+
 
 st.title("teMatDb (ver1.1.1) new")
 st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]ase")
@@ -55,8 +57,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Material Property",
 with tab3:  
     st.header(":red[tab1c to be made]")    
 
-with tab4:
-        
+with tab4:        
     st.header(":blue[Thermoelectric Data]")
     with st.expander("See details.."):
         st.subheader(":red[Data Sources]")  
