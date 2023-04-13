@@ -39,7 +39,7 @@ from library.dev_performance import set_singleleg_device, run_pykeri, draw_dev_p
 formattedDate, yyyymmdd, HHMMSS = br.now_string()
 
 
-st.title("teMatDb (ver1.1.1)")
+st.title("teMatDb (ver1.1.1) new")
 st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]ase")
 st.markdown("- High quality thermoelectric (TE) database (DB).")
 
@@ -49,7 +49,71 @@ tab0, tab1a, tab1b, tab2, tab3, tab4 = st.tabs(["ThermoElectric Material",
                                                  "Data Distribution", "Theory", "Link", "Contact"])
 
 
-  
+with tab1b:  
+    st.header(":red[tab1c to be made]")    
+
+with tab2:
+    st.header(":blue[Data sources]")
+    st.header(":blue[Figures]")
+    st.header(":blue[Efficiency calculation]")
+    st.header(":blue[References]")
+    # st.markdown("[1] Chung, Jaywan, and Byungki Ryu. “Nonlocal Problems Arising in Thermoelectrics.” Mathematical Problems in Engineering 2014 (December 15, 2014): e909078. https://doi.org/10.1155/2014/909078.")
+    st.markdown("[1] Ryu, Byungki, Jaywan Chung, Eun-Ae Choi, Pawel Ziolkowski, Eckhard Müller, and SuDong Park. “Counterintuitive Example on Relation between ZT and Thermoelectric Efficiency.” Applied Physics Letters 116, no. 19 (May 13, 2020): 193903. https://doi.org/10.1063/5.0003749.")
+    st.markdown("[2] Chung, Jaywan, Byungki Ryu, and SuDong Park. “Dimension Reduction of Thermoelectric Properties Using Barycentric Polynomial Interpolation at Chebyshev Nodes.” Scientific Reports 10, no. 1 (August 10, 2020): 13456. https://doi.org/10.1038/s41598-020-70320-7.")
+    st.markdown("[3] Ryu, Byungki, Jaywan Chung, and SuDong Park. “Thermoelectric Degrees of Freedom Determining Thermoelectric Efficiency.” iScience 24, no. 9 (September 24, 2021): 102934. https://doi.org/10.1016/j.isci.2021.102934.")
+    st.markdown("[4] Chung, Jaywan, Byungki Ryu, and Hyowon Seo. “Unique Temperature Distribution and Explicit Efficiency Formula for One-Dimensional Thermoelectric Generators under Constant Seebeck Coefficients.” Nonlinear Analysis: Real World Applications 68 (December 1, 2022): 103649. https://doi.org/10.1016/j.nonrwa.2022.103649.")
+    st.markdown("[5] Ryu, Byungki, Jaywan Chung, Masaya Kumagai, Tomoya Mato, Yuki Ando, Sakiko Gunji, Atsumi Tanaka, et al. “Best Thermoelectric Efficiency of Ever-Explored Materials.” iScience 26, no. 4 (April 21, 2023): 106494. https://doi.org/10.1016/j.isci.2023.106494.")
+    st.write("(Style: Chicago Manual of Style 17th edition (full note))")
+
+with tab3:
+    st.subheader("Thermoelectric Power Generator Web Simulator Lite ver.0.53a")
+    st.write(":blue[https://tes.keri.re.kr/]")
+    
+    st.subheader("Korea Electrotechnology Research Institute (KERI)")
+    st.write(":blue[https://www.keri.re.kr/]")
+   
+    st.subheader("Alloy Design DB (v0.33)")
+    st.write(":blue[https://byungkiryu-alloydesigndb-demo-v0-33-main-v0-33-u86ejf.streamlit.app/]")
+    
+with tab4:   
+    st.header(":blue[KERI Thermoelectric Science TEAM]")
+    with st.expander("See Members:", expanded=False):   
+        st.subheader("SuDong Park, Dr. (박수동)")
+        st.subheader("Byungki Ryu, Dr. (류병기)")
+        st.markdown("byungkiryu at keri.re.kr")
+        st.subheader("Jaywan Chung, Dr. (정재환)")
+        st.subheader("Jongho Park, Mr. (박종호)")
+        st.subheader("Ji-Hee Son, Ms. (손지희)")
+        st.subheader("Jeongin Jang, Miss (장정인)")
+        st.subheader("Sungjin Park, Dr. (박성진)")
+    
+    st.header(":blue[Visit KERI. How to Come?]")
+    with st.expander("See Maps:", expanded=False):        
+        st.markdown("")
+        st.image("./image/southkorea_map_screenshot.png")    
+        st.caption("(South Korea Map) Changwon-si")
+        st.image("./image/changwon_map_screenshot.png")    
+        st.caption("(Changwon Map) Korea Electrotechnology Research Institute (KERI)")
+        st.image("./image/map_2023.jpg")   
+        st.caption("(KERI map) Office and Lab, building #3 and #5")
+    
+    st.header(":blue[QR Code]")
+    with st.expander("See QR code (v1.1.1):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-1-abc.streamlit.app.png")
+        st.subheader("https://tematdb-v1-1-main-v1-1-1-abc.streamlit.app/")
+    with st.expander("See QR code (v1.1.0):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-0-abc.streamlit.app.png")
+        st.subheader("https://tematdb-v1-1-main-v1-1-0-abc.streamlit.app/")
+    with st.expander("See QR code (v1.0.2):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-2-abc.streamlit.app.png")
+        # st.header("https://qrco.de/bds6GG/")
+    with st.expander("See QR code (v1.0.1):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-1-abc.streamlit.app.png")
+        # st.header("https://qrco.de/bds6GG/")
+    with st.expander("See QR code (v1.0.0):", expanded=False):            
+        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-0-abc.streamlit.app.png")
+
+
     
     
 ###############
@@ -530,70 +594,4 @@ with tab1a:
 
     # fig_after_filter = draw3QQ(df3,df4)
     # st.pyplot(fig_after_filter)    
-
-with tab1b:  
-    st.header(":red[tab1c to be made]")  
-    
-    
-
-with tab2:
-    st.header(":blue[Data sources]")
-    st.header(":blue[Figures]")
-    st.header(":blue[Efficiency calculation]")
-    st.header(":blue[References]")
-    # st.markdown("[1] Chung, Jaywan, and Byungki Ryu. “Nonlocal Problems Arising in Thermoelectrics.” Mathematical Problems in Engineering 2014 (December 15, 2014): e909078. https://doi.org/10.1155/2014/909078.")
-    st.markdown("[1] Ryu, Byungki, Jaywan Chung, Eun-Ae Choi, Pawel Ziolkowski, Eckhard Müller, and SuDong Park. “Counterintuitive Example on Relation between ZT and Thermoelectric Efficiency.” Applied Physics Letters 116, no. 19 (May 13, 2020): 193903. https://doi.org/10.1063/5.0003749.")
-    st.markdown("[2] Chung, Jaywan, Byungki Ryu, and SuDong Park. “Dimension Reduction of Thermoelectric Properties Using Barycentric Polynomial Interpolation at Chebyshev Nodes.” Scientific Reports 10, no. 1 (August 10, 2020): 13456. https://doi.org/10.1038/s41598-020-70320-7.")
-    st.markdown("[3] Ryu, Byungki, Jaywan Chung, and SuDong Park. “Thermoelectric Degrees of Freedom Determining Thermoelectric Efficiency.” iScience 24, no. 9 (September 24, 2021): 102934. https://doi.org/10.1016/j.isci.2021.102934.")
-    st.markdown("[4] Chung, Jaywan, Byungki Ryu, and Hyowon Seo. “Unique Temperature Distribution and Explicit Efficiency Formula for One-Dimensional Thermoelectric Generators under Constant Seebeck Coefficients.” Nonlinear Analysis: Real World Applications 68 (December 1, 2022): 103649. https://doi.org/10.1016/j.nonrwa.2022.103649.")
-    st.markdown("[5] Ryu, Byungki, Jaywan Chung, Masaya Kumagai, Tomoya Mato, Yuki Ando, Sakiko Gunji, Atsumi Tanaka, et al. “Best Thermoelectric Efficiency of Ever-Explored Materials.” iScience 26, no. 4 (April 21, 2023): 106494. https://doi.org/10.1016/j.isci.2023.106494.")
-    st.write("(Style: Chicago Manual of Style 17th edition (full note))")
-
-with tab3:
-    st.subheader("Thermoelectric Power Generator Web Simulator Lite ver.0.53a")
-    st.write(":blue[https://tes.keri.re.kr/]")
-    
-    st.subheader("Korea Electrotechnology Research Institute (KERI)")
-    st.write(":blue[https://www.keri.re.kr/]")
-   
-    st.subheader("Alloy Design DB (v0.33)")
-    st.write(":blue[https://byungkiryu-alloydesigndb-demo-v0-33-main-v0-33-u86ejf.streamlit.app/]")
-    
-with tab4:   
-    st.header(":blue[KERI Thermoelectric Science TEAM]")
-    with st.expander("See Members:", expanded=False):   
-        st.subheader("SuDong Park, Dr. (박수동)")
-        st.subheader("Byungki Ryu, Dr. (류병기)")
-        st.markdown("byungkiryu at keri.re.kr")
-        st.subheader("Jaywan Chung, Dr. (정재환)")
-        st.subheader("Jongho Park, Mr. (박종호)")
-        st.subheader("Ji-Hee Son, Ms. (손지희)")
-        st.subheader("Jeongin Jang, Miss (장정인)")
-        st.subheader("Sungjin Park, Dr. (박성진)")
-    
-    st.header(":blue[Visit KERI. How to Come?]")
-    with st.expander("See Maps:", expanded=False):        
-        st.markdown("")
-        st.image("./image/southkorea_map_screenshot.png")    
-        st.caption("(South Korea Map) Changwon-si")
-        st.image("./image/changwon_map_screenshot.png")    
-        st.caption("(Changwon Map) Korea Electrotechnology Research Institute (KERI)")
-        st.image("./image/map_2023.jpg")   
-        st.caption("(KERI map) Office and Lab, building #3 and #5")
-    
-    st.header(":blue[QR Code]")
-    with st.expander("See QR code (v1.1.1):", expanded=False):            
-        st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-1-abc.streamlit.app.png")
-        st.subheader("https://tematdb-v1-1-main-v1-1-1-abc.streamlit.app/")
-    with st.expander("See QR code (v1.1.0):", expanded=False):            
-        st.image("./image/"+"qrcode_tematdb-v1-1-main-v1-1-0-abc.streamlit.app.png")
-        st.subheader("https://tematdb-v1-1-main-v1-1-0-abc.streamlit.app/")
-    with st.expander("See QR code (v1.0.2):", expanded=False):            
-        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-2-abc.streamlit.app.png")
-        # st.header("https://qrco.de/bds6GG/")
-    with st.expander("See QR code (v1.0.1):", expanded=False):            
-        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-1-abc.streamlit.app.png")
-        # st.header("https://qrco.de/bds6GG/")
-    with st.expander("See QR code (v1.0.0):", expanded=False):            
-        st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-0-abc.streamlit.app.png")
 
