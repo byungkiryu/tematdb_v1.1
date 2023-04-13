@@ -68,6 +68,7 @@ with tab2:
 with tab3:
     st.subheader("Thermoelectric Power Generator Web Simulator Lite ver.0.53a")
     st.write(":blue[https://tes.keri.re.kr/]")
+    st.write(":blue[https://github.com/jaywan-chung/teg-sim-lite]")
     
     st.subheader("Korea Electrotechnology Research Institute (KERI)")
     st.write(":blue[https://www.keri.re.kr/]")
@@ -114,7 +115,6 @@ with tab4:
         st.image("./image/"+"qrcode_tematdb-v1-0-0-main-v1-0-0-abc.streamlit.app.png")
 
 
-    
     
 ###############
 ###############
