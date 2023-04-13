@@ -393,7 +393,7 @@ with tab1a:
             df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
             df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
             
-            cri_str = ":red[Noisy samples: {} > {:.1f}]".format(cri_col, cri_val)
+            cri_str = ":red[Noisy samples: {} > {:.2f}]".format(cri_col, cri_val)
             st.subheader(cri_str)
             # st.header(":red[Noisy samples: {} > {}]".format(cri_col, cri_val))  
             st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
