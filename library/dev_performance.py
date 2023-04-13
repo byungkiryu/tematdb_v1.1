@@ -286,7 +286,8 @@ def run_pykeri(dev, sampleid, leg_length, leg_area, N_leg, Th, Tc):
 
 
 
-def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result):
+def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result, 
+                  label_db, label_sampleid, label_doi):
     Is = df_dev_run_currents_result.current
     Vs = df_dev_run_currents_result.voltage
     QhAs = df_dev_run_currents_result.QhA
@@ -303,8 +304,13 @@ def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_r
     
     figsize=(8,8)
     fig, axs = plt.subplots(2,2, figsize=figsize)
+    fig.subplots_adjust(wspace=0.1, hspace=0.3)
     (ax1, ax2), (ax3, ax4) = axs
     
+    suptitle = "{} {} {}".format(label_db, label_sampleid, label_doi)
+    fig.suptitle(suptitle)
+    
+    title = "$I - V$ Characteristic"
     ax = ax1
     Xs = Is
     Ys = Vs
@@ -312,7 +318,10 @@ def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_r
     ax.scatter(Xs,Ys)
     ax.set_xlabel(r'Current induced [$A$]')
     ax.set_ylabel(r'Voltage generated [$V$]')
+    ax.set_title(title)
     
+    title = "$I - P$ characteristic"
+    ax = ax1
     ax = ax2
     Xs = Is
     Ys = pows*1e3
@@ -324,7 +333,9 @@ def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_r
     ax.set_ylabel(r'Power generated [$mW_{\rm el}$]')
     ax.yaxis.tick_right()
     ax.yaxis.set_label_position("right")
+    ax.set_title(title)
     
+    title = r"$I - Q_h$ characteristic"
     ax = ax3
     Xs = Is
     Ys = QhAs*1e3
@@ -332,7 +343,9 @@ def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_r
     ax.scatter(Xs,Ys)
     ax.set_xlabel(r'Current induced [$A$]')
     ax.set_ylabel(r'Hot side heat input [$mW_{\rm th}$]')
+    ax.set_title(title)
     
+    title = r"$I - \eta$ characteristic"
     ax = ax4
     Xs = Is
     Ys = etas*100
@@ -344,34 +357,41 @@ def draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_r
     ax.set_ylabel(r'Efficiency $\eta$ [$\%$]')
     ax.yaxis.tick_right()
     ax.yaxis.set_label_position("right")
+    ax.set_title(title)
     
     return fig
        
 
-# if __name__ == "__main__":
-#     sampleid = 2
-#     leg_length = 1e-3 * 10 
-#     leg_area = 1e-6   * 3*3
-#     N_leg = 1  
-#     Tc, Th = 300, 900     
+if __name__ == "__main__":
+    db_mode = 'teMatDb'    
+    sampleid = 2
+    doi = "10.1038/nature11439"
+    leg_length = 1e-3 * 10 
+    leg_area = 1e-6   * 3*3
+    N_leg = 1  
+    Tc, Th = 300, 900     
     
-#     interp_opt = {MatProp.OPT_INTERP:MatProp.INTERP_LINEAR,\
-#                   MatProp.OPT_EXTEND_LEFT_TO:1,          # ok to 0 Kelvin
-#                   MatProp.OPT_EXTEND_RIGHT_BY:2000}        # ok to +50 Kelvin from the raw data
-#     TF_mat_complete, mat = tep_generator_from_excel_files(sampleid, interp_opt)
+    interp_opt = {MatProp.OPT_INTERP:MatProp.INTERP_LINEAR,\
+                  MatProp.OPT_EXTEND_LEFT_TO:1,          # ok to 0 Kelvin
+                  MatProp.OPT_EXTEND_RIGHT_BY:2000}        # ok to +50 Kelvin from the raw data
+    TF_mat_complete, mat = tep_generator_from_excel_files(sampleid, interp_opt)
     
-#     # try:
-#     #     data_csv_path = "../data_csv/"
-#     #     df_db_csv = pd.read_csv(data_csv_path+"tematdb_v1.0.0_completeTEPset.csv")
-#     # except:
-#     # # if(1):
-#     #     data_csv_path = "./data_csv/"
-#     #     df_db_csv = pd.read_csv(data_csv_path+"tematdb_v1.0.0_completeTEPset.csv")
+    label_db = "DB: {}".format(db_mode)
+    label_sampleid = "sampleid: {}".format(sampleid)
+    label_doi = '[DOI: {}]'.format(doi)   
+    
+    # try:
+    #     data_csv_path = "../data_csv/"
+    #     df_db_csv = pd.read_csv(data_csv_path+"tematdb_v1.0.0_completeTEPset.csv")
+    # except:
+    # # if(1):
+    #     data_csv_path = "./data_csv/"
+    #     df_db_csv = pd.read_csv(data_csv_path+"tematdb_v1.0.0_completeTEPset.csv")
         
-#     dev = set_singleleg_device(mat, leg_length,leg_area,N_leg,Th,Tc)   
-#     df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result = run_pykeri(dev, sampleid,leg_length,leg_area,N_leg,Th,Tc)
-#     fig3 = draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result)
-# fig3.show()
-# if (1):
+    dev = set_singleleg_device(mat, leg_length,leg_area,N_leg,Th,Tc)   
+    df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result = run_pykeri(dev, sampleid,leg_length,leg_area,N_leg,Th,Tc)
+    fig3 = draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result,
+                         label_db, label_sampleid, label_doi)
+    fig3.show()
 
     

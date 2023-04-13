@@ -10,6 +10,7 @@ This is the program to visualize
 
 
 import os
+import math
 import numpy as np
 import pandas as pd
 from datetime import datetime
@@ -34,10 +35,12 @@ from matplotlib import pyplot as plt
 def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
 
     figsize = (8,8)
-    fig1, axs1  = plt.subplots(2,2, figsize=figsize, sharex=True)
-    fig2, axs2  = plt.subplots(2,2, figsize=figsize, sharex=True)
+    fig1, axs1  = plt.subplots(2,2, figsize=figsize)
+    fig2, axs2  = plt.subplots(2,2, figsize=figsize)
     (ax1, ax2), (ax3, ax4) = axs1
     (ax5, ax6), (ax7, ax8) = axs2
+    fig1.subplots_adjust(wspace=0.3, hspace=0.3)
+    fig2.subplots_adjust(wspace=0.3, hspace=0.3)
     
     suptitle = "{} {} {}".format(label_db, label_sampleid, label_doi)
     fig1.suptitle(suptitle)
@@ -46,26 +49,19 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     alpha_raw   = np.array( mat.Seebeck.raw_data() ).T
     rho_raw     = np.array( mat.elec_resi.raw_data() ).T    
     kappa_raw   = np.array( mat.thrm_cond.raw_data() ).T
-    ZT_raw   = np.array( mat.ZT.raw_data() ).T
+    ZT_raw      = np.array( mat.ZT.raw_data() ).T
 
     sigma_raw   = rho_raw.copy()
     sigma_raw[1] = (1/rho_raw[1]).copy()
     
-
     autoTc = mat.min_raw_T
-    autoTh = mat.max_raw_T
-    # TcZT = min(ZT_raw[0])
-    # ThZT = max(ZT_raw[0])    
-    # TcTEPZT = max(autoTc, TcZT)
-    # ThTEPZT = min(autoTh, ThZT)
-    # Ts_TEPZT = np.linspace(TcTEPZT, ThTEPZT, 100)
-    # Ts_TEP   = np.linspace(autoTc, autoTh, 100)
-    # Ts_ZT    = np.linspace(TcZT, ThZT, 100)
-    
+    autoTh = mat.max_raw_T    
     Ts_TEP, Ts_ZT, Ts_TEPZT = get_Ts_TEPZT(mat)
     TcZT, ThZT = min(Ts_ZT), max(Ts_ZT)
     TcTEP, ThTEP = min(Ts_TEP), max(Ts_TEP)
     TcTEPZT, ThTEPZT = min(Ts_TEPZT), max(Ts_TEPZT)
+    
+
 
     Ts = Ts_TEPZT
     alpha = mat.Seebeck(Ts)
@@ -77,32 +73,32 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     Lo = 2.44*1e-8
     Lorenz = RK/Ts
     
-    ZT    = mat.ZT(Ts)
 
     def draws_interp_raw():
-        ax.scatter( X_raw, Y_raw, label="Raw TEP digitized",color='C0')
+        ax.scatter( X_raw, Y_raw, label="TEP digitized \n from figure",color='C0')
         ax.plot( Ts, tep_interp, linewidth=10, alpha=0.35,label="TEP interpolated",color='C0')
         ax.set_title(tep_title)
-        ax.legend()
+        # ax.legend()
     def draws_interp_ZT():
-        ax.scatter( X_raw, Y_raw, label="Raw $ZT$ digitized\n(from ZT figure)",color='C1')
-        ax.plot( Ts, tep_interp, linewidth=10, alpha=0.35,label="Calculated $ZT$ \n(from TEP interpolated)",color='C2')
+        ax.scatter( X_raw, Y_raw, label="$ZT$ from figure",color='C1')
+        ax.plot( Ts, tep_interp, linewidth=10, alpha=0.35,label="$ZT$ calculated \n from TEP interpolated",color='C2')
         ax.set_title(tep_title)
-        ax.legend()
+
     def draws_interp_only():
         # ax.scatter( X_raw, Y_raw, label="raw")
-        ax.plot( Ts, tep_interp, linewidth=10, alpha=0.35,label="Calculated\n(from TEP interpolated)",color='C2')
+        ax.plot( Ts, tep_interp, linewidth=10, alpha=0.35,label="TEP interpolated",color='C2')
         ax.set_title(tep_title)
-        ax.legend()        
+        # ax.legend()        
     
     ax = ax1
     tep_title = r'Electrical Conductivity: $\sigma$'
     tep_array_raw = sigma_raw
-    tep_interp = sigma/100
+    tep_interp = sigma/100 /1e3
     X_raw = tep_array_raw[0]
-    Y_raw = tep_array_raw[1]  /100  
+    Y_raw = tep_array_raw[1]  /100 /1e3
     draws_interp_raw()
-    ax.set_ylabel(r"$\sigma$ [$S \cdot cm^{-1}$]")
+    ax.set_ylabel(r"$\sigma$ [$10^3$ $S \cdot cm^{-1}$]")
+    
 
     ax = ax2
     tep_title = r'Seebeck Coefficient: $\alpha$'
@@ -112,8 +108,8 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     Y_raw = tep_array_raw[1]*1e3
     draws_interp_raw()
     ax.set_ylabel(r"$\alpha$ [$mV \cdot K^{-1}$]")
-    ax.yaxis.tick_right()
-    ax.yaxis.set_label_position("right")
+    # ax.yaxis.tick_right()
+    # ax.yaxis.set_label_position("right")
 
     ax = ax3
     tep_title = r'Thermal Conductivity: $\kappa$'
@@ -125,25 +121,25 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     ax.set_ylabel(r"$\kappa$ [$W \cdot m^{-1} \cdot K^{-1}$]")
     
     ax = ax4
-    tep_title = r'Dimensionless Figure of Meirt: $ZT$'
+    tep_title = r'Figure of Meirt: $ZT$'
     tep_array_raw = ZT_raw
     tep_interp = alpha*alpha/rho/kappa*Ts
     X_raw = tep_array_raw[0]
     Y_raw = tep_array_raw[1]  
     draws_interp_ZT()
     ax.set_ylabel(r"$ZT$ [1]")
-    ax.yaxis.tick_right()
-    ax.yaxis.set_label_position("right")
+    # ax.yaxis.tick_right()
+    # ax.yaxis.set_label_position("right")
     
     
     ax = ax5
     tep_title = r'Electrical Resistivity: $\rho$'
     tep_array_raw = rho_raw
-    tep_interp = rho
+    tep_interp = rho *1e5
     X_raw = tep_array_raw[0]
-    Y_raw = tep_array_raw[1]  
+    Y_raw = tep_array_raw[1] *1e5
     draws_interp_raw()
-    ax.set_ylabel(r"$\rho$ [$\Omega \cdot m$]")
+    ax.set_ylabel(r"$\rho$ [$10^{-3}$ $\Omega \cdot cm$]")
 
     ax = ax6
     tep_title = r'Power Factor (PF): $\alpha^2 \sigma$'
@@ -152,29 +148,44 @@ def draw_mat_teps(mat, label_db="", label_sampleid="", label_doi=""):
     # X_raw = tep_array_raw[0]
     # Y_raw = tep_array_raw[1]*1e3  
     draws_interp_only()
-    ax.set_ylabel(r"$\alpha^2 \sigma$ [$mW \cdot m \cdot K^{-2}$]")
-    ax.yaxis.tick_right()
-    ax.yaxis.set_label_position("right")
+    ax.set_ylabel(r"$\alpha^2 \sigma$ [$mW \cdot m^{-1} \cdot K^{-2}$]")
+    # ax.yaxis.tick_right()
+    # ax.yaxis.set_label_position("right")
     
     ax = ax7 
     tep_title = r'RK: $\rho \kappa$'
     # tep_array_raw = kappa_raw
     tep_interp = RK
-    X_raw = tep_array_raw[0]
-    Y_raw = tep_array_raw[1]  
+    # X_raw = tep_array_raw[0]
+    # Y_raw = tep_array_raw[1]  
     draws_interp_only()
     ax.set_ylabel(r'$\rho  \kappa$ [$W \cdot \Omega \cdot K^{-1}$]')
 
     ax = ax8
-    tep_title = r'Lorenz number: $L=\rho (\kappa_{\rm el}+\kappa_{\rm ph}) / T$'
+    tep_title = r'Lorenz number: $L = \rho \kappa_{\rm tot}  T^{-1}$'
     # tep_array_raw = kappa_raw
-    tep_interp = Lorenz/Lo
-    X_raw = tep_array_raw[0]
-    Y_raw = tep_array_raw[1]  
+    tep_interp = Lorenz *1e8
+    # X_raw = tep_array_raw[0]
+    # Y_raw = tep_array_raw[1]  *1e8
     draws_interp_only()
-    ax.set_ylabel(r'$L / L_o$')
-    ax.yaxis.tick_right()
-    ax.yaxis.set_label_position("right")
+    ax.set_ylabel(r'$L$ [$10^8$ $W \cdot \Omega \cdot K^{-2}]$')
+    # ax.yaxis.tick_right()
+    # ax.yaxis.set_label_position("right")
+    
+    
+    TcLowerP = min(TcZT, TcTEP, TcTEPZT)
+    ThHigherP = max(ThZT, ThTEP, ThTEPZT)    
+    TcLower  = math.floor( TcLowerP/100 - 0.50) * 100 - 50
+    ThHigher = math.ceil( ThHigherP/100 + 0.50) * 100 + 50
+    
+    for ax in [ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8]:
+        ax.set_xlim(TcLower,ThHigher)
+        ax.set_xlabel(r"Temperature [$K$]")  
+        ax.xaxis.set_ticks_position('both')
+        ax.yaxis.set_ticks_position('both')
+        ax.xaxis.set_tick_params(which='both', direction='in', labelbottom=True)
+        ax.yaxis.set_tick_params(which='both', direction='in', labelbottom=True)
+        ax.legend()
     return fig1, fig2
 
 def err_norm_calc(err, n_norm):
