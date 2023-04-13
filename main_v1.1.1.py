@@ -44,18 +44,66 @@ st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]as
 st.markdown("- High quality thermoelectric (TE) database (DB).")
 
 
-tab0, tab1a, tab1b, tab2, tab3, tab4 = st.tabs(["ThermoElectric Material", 
-                                                 "Database Self-Consistency", 
-                                                 "Data Distribution", "Theory", "Link", "Contact"])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Material Property", 
+                                                 "Data Self-Consistency", 
+                                                 "Data Distribution",
+                                                 "Theory & Equations", 
+                                                 "Link", 
+                                                 "Contact"])
 
 
-with tab1b:  
+with tab3:  
     st.header(":red[tab1c to be made]")    
 
-with tab2:
-    st.header(":blue[Data sources]")
-    st.header(":blue[Figures]")
-    st.header(":blue[Efficiency calculation]")
+with tab4:
+        
+    st.header(":blue[Thermoelectric Data]")
+    with st.expander("See details.."):
+        st.subheader(":red[Data Sources]")  
+        st.subheader(":red[Thermoelectric Materials to Digital Data]")  
+        st.subheader(":red[Thermoelectric Device Data]")  
+        
+    st.header(":blue[teMatDb]")
+    with st.expander("See details.."):
+        st.subheader(":red[Data digitization and teMatDb]")
+        st.subheader(":red[Metadata in teMatDb]")
+        st.subheader(":red[Possible Source of Errors]")
+        st.subheader(":red[Error Analysis Methods]")
+        
+    st.header(":blue[Theory]")
+    with st.expander("See details.."):
+        st.subheader(":red[Introduction to Thermoelectricity]")
+        st.subheader(":red[Thermoelectric Transport]")
+        st.subheader(":red[Thermoelectric Materials]")
+        st.subheader(":red[Thermoelectric Device and Modules for Power Generation]")
+        st.subheader(":red[Thermoelectric Efficiency]")  
+    
+    st.header(":blue[Advanced Efficiency Theory and Calculations]")
+    with st.expander("See details.."):
+        st.subheader(":red[Thermoelectric Conversion Efficiency with Temperature-dependent Thermoelectric Properties]")
+        st.subheader(":red[Thermoelectric Differential Equations]")
+        st.subheader(":red[Single Parameter Theory I: ZT in Constant-Property Model]")
+        st.subheader(":red[Single Parameter Theory II: ZT in Constant-Seebeck coefficient Model]")
+        st.subheader(":red[Three Thermoelectric Degrees of Freedom]")
+        st.subheader(":red[Thermoelectric Inegtral Equations in the One-dimensional (1-D)]")
+        st.subheader(":red[Thermoelectric Efficiency Solving Algorithm]")
+        st.subheader(":red[Efficiency Solver: pykeri 2019]")
+        st.subheader(":red[High-dimensional analysis: Optimal Leg Aspect Ratio]")
+        st.subheader(":red[Dimensional Mapping to 1-D]")
+
+    st.header(":blue[Advanced Device Design Theory]")
+    with st.expander("See details.."):
+        st.subheader(":red[Thermoelectric Algebra]")
+        st.subheader(":red[Thermoelectric Inequality]")
+        st.subheader(":red[Thermoelectric Circuit Model]")
+        st.subheader(":red[Contact Resistances]")
+        
+    st.header(":blue[Thermoelectric Efficiency Map]")
+    with st.expander("See details.."):
+        st.subheader(":red[Best Thermoelectric Efficiency of Ever-Explored Materials], as of 2021-Nov-24")
+        
+        
+        
     st.header(":blue[References]")
     # st.markdown("[1] Chung, Jaywan, and Byungki Ryu. “Nonlocal Problems Arising in Thermoelectrics.” Mathematical Problems in Engineering 2014 (December 15, 2014): e909078. https://doi.org/10.1155/2014/909078.")
     st.markdown("[1] Ryu, Byungki, Jaywan Chung, Eun-Ae Choi, Pawel Ziolkowski, Eckhard Müller, and SuDong Park. “Counterintuitive Example on Relation between ZT and Thermoelectric Efficiency.” Applied Physics Letters 116, no. 19 (May 13, 2020): 193903. https://doi.org/10.1063/5.0003749.")
@@ -65,7 +113,7 @@ with tab2:
     st.markdown("[5] Ryu, Byungki, Jaywan Chung, Masaya Kumagai, Tomoya Mato, Yuki Ando, Sakiko Gunji, Atsumi Tanaka, et al. “Best Thermoelectric Efficiency of Ever-Explored Materials.” iScience 26, no. 4 (April 21, 2023): 106494. https://doi.org/10.1016/j.isci.2023.106494.")
     st.write("(Style: Chicago Manual of Style 17th edition (full note))")
 
-with tab3:
+with tab5:
     st.subheader("Thermoelectric Power Generator Web Simulator Lite ver.0.53a")
     st.write(":blue[https://tes.keri.re.kr/]")
     st.write(":blue[https://github.com/jaywan-chung/teg-sim-lite]")
@@ -76,7 +124,7 @@ with tab3:
     st.subheader("Alloy Design DB (v0.33)")
     st.write(":blue[https://byungkiryu-alloydesigndb-demo-v0-33-main-v0-33-u86ejf.streamlit.app/]")
     
-with tab4:   
+with tab6:   
     st.header(":blue[KERI Thermoelectric Science TEAM]")
     with st.expander("See Members:", expanded=False):   
         st.subheader("SuDong Park, Dr. (박수동)")
@@ -205,7 +253,7 @@ with st.sidebar:
 ###############
 ###############
 ## Material data for given sampleid
-with tab0:  
+with tab1:  
     ## Read mat, TEP
     # st.header("[db_mode  = :blue[{}]]".format(db_mode) )
     st.header(":blue[I. DB MetaData Table]")
@@ -303,10 +351,7 @@ with tab0:
             st.pyplot(fig3)        
             st.caption("Figure. ZT error analysis of :blue[sampleid={}] in :blue[{}].".format(sampleid,db_mode))
             
-            
-            
-        
-# with tab1c:  
+          
     st.header(":blue[IV. Material Performance]")
     st.subheader(":red[[db_mode  = :blue[{}]]]".format(db_mode) + ":red[[sampleid = :blue[{}]]]".format( sampleid))
     if not TF_mat_complete:
@@ -359,7 +404,8 @@ with tab0:
         dev = set_singleleg_device(mat, leg_length,leg_area,N_leg,Th,Tc)            
         # dev = set_singleleg_device(df_db_csv,sampleid,leg_length,leg_area,N_leg,Th,Tc)
         df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result = run_pykeri(dev, sampleid,leg_length,leg_area,N_leg,Th,Tc)
-        fig4 = draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result)
+        fig4 = draw_dev_perf(df_dev_run_currents_result, df_dev_run_powMax_result, df_dev_run_etaOpt_result,
+                             label_db, label_sampleid, label_doi)
         st.pyplot(fig4)
         with st.expander("See Material performance curves:", expanded=True):        
             st.write("currents performances")
@@ -373,7 +419,7 @@ with tab0:
 ###############
 ###############
 ## DB Stat
-with tab1a:     
+with tab2:     
 
     st.header(":blue[DataFrame for Error Table]")
     st.write(df_db_error)
@@ -386,12 +432,17 @@ with tab1a:
         df_db_error_criteria_list = []
         error_criteria_list = []
         sampleid_list_df_db_error_criteria = []
+        df4_db_error_filtered = df_db_error.copy()
+        df5_db_error_anomaly = df_db_error.copy()
         for cri_col, cri_val in zip(cri_cols, cri_vals):   
             error_criteria = np.abs( df_db_error[cri_col] ) > cri_val 
             error_criteria_list.append(error_criteria.copy())
             df_db_error_criteria = df_db_error[ error_criteria ].copy()
             df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
             df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
+            
+            df4_db_error_filtered = df4_db_error_filtered[ np.abs( df4_db_error_filtered[cri_col] ) < cri_val ].copy()
+            df5_db_error_anomaly  = df5_db_error_anomaly[ np.abs( df5_db_error_anomaly[cri_col] ) < cri_val ].copy()
             
             cri_str = ":red[Noisy samples: {} > {:.2f}]".format(cri_col, cri_val)
             st.subheader(cri_str)
@@ -494,16 +545,11 @@ with tab1a:
         draw_ZT_error_correlation(df2)
         
 
-    def draw3QQ(df1,df2):       
-        
-        # figsize = (6,6) 
-        # fig, axs = plt.subplots(2,2,figsize=figsize, sharex=True, constrained_layout=True )  
-        # (ax1, ax2), (ax3, ax4) = axs 
-    
-        figsize = (12,3) 
+    def draw3QQ(df1,df2): 
+        figsize = (13,3) 
         # fig, axs = plt.subplots(1,3,figsize=figsize, sharex=True, constrained_layout=True )  
         fig, axs = plt.subplots(1,3,figsize=figsize, sharex=True,  )  
-        fig.subplots_adjust(wspace=0.5, hspace=0.4)
+        fig.subplots_adjust(wspace=0.4, hspace=0.2)
         (ax1, ax2, ax3) = axs 
         
         ax = ax1
@@ -560,6 +606,10 @@ with tab1a:
         ax.yaxis.set_tick_params(which='both', labelbottom=True)
         ax.set_title(tep_title)
         # fig.tight_layout()
+        
+        for ax in (ax1, ax2, ax3):
+            ax.xaxis.set_tick_params(which='both', direction='in', labelbottom=True)
+            ax.yaxis.set_tick_params(which='both', direction='in', labelbottom=True)        
         return fig
     
     st.subheader(":red[QQ analysis]")
@@ -568,22 +618,16 @@ with tab1a:
 
     st.header(":blue[DB After Filtering]")
     with st.expander("See plots:", expanded=True):   
-        # df1 = df_db_extended_csv.copy()
+        df4_db_error_filtered['notNoisy'] = True
+        df3_df_db_extended_csv_filtered = pd.merge( df_db_extended_csv, df4_db_error_filtered[['sampleid','notNoisy']], on='sampleid', how='left')
+        df3_df_db_extended_csv_filtered = df3_df_db_extended_csv_filtered[ df3_df_db_extended_csv_filtered.notNoisy == True ].copy()
         
-        # df2 = df_db_error
-        df4 = df_db_error[ df_db_error.Linf > 0].copy()
-        df4 = df4[ error_criteria_list[0] != True]
-        df4 = df4[ error_criteria_list[1] != True]
-        df4 = df4[ error_criteria_list[2] != True]
-        df4 = df4.copy()
-        df4['notNoisy'] = True
-        
-        df3 = pd.merge( df_db_extended_csv, df4[['sampleid','notNoisy']], on='sampleid', how='left')
-        df3 = df3[ df3.notNoisy == True ].copy()
+        df3, df4 = df3_df_db_extended_csv_filtered, df4_db_error_filtered
         
         st.subheader(":red[ZT Error Correlation]")
         draw_ZT_error_correlation(df4)
 
+    
     st.subheader(":red[QQ analysis]")
     fig_after_filter = draw3QQ(df3,df4)
     st.pyplot(fig_after_filter)      
