@@ -157,8 +157,8 @@ df_db_err = pd.DataFrame(sampleid_errLnorm_dict_list)
 df_db_err['Linf_over_avgZT']  = df_db_err.Linf / df_db_err.avgZT_TEP_on_Ts_TEP
 df_db_err['Linf_over_peakZT'] = df_db_err.Linf / df_db_err.peakZT_TEP_on_Ts_TEP
 
-df_db_err.to_csv("./data_error_analysis/"+"ZT_error_{}.csv".format(formattedDate), index=False)
-df_db_err.to_csv("./data_error_analysis/"+"ZT_error.csv", index=False)
-df_db_err.to_csv("./data_error_analysis/"+"error.csv", index=False)
+df_db_err.to_csv("./data_error_analysis/"+"Z_error_{}.csv".format(formattedDate), index=False)
+df_db_err.to_csv("./data_error_analysis/"+"Z_error.csv", index=False)
+
     
 
