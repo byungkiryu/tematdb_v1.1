@@ -235,7 +235,7 @@ with st.sidebar:
             st.markdown("Minimum value: 0.1. The data larger than ths will be filtered out")
             cri_cols = ['davgZT', 'dpeakZT','Linf',
                         'Linf_over_avgZT','Linf_over_peakZT']
-            cri_vals_def = [0.10, 0.10, 0.10, 0.25, 0.10]
+            cri_vals_def = [0.10, 0.10, 0.10, 0.30, 0.10]
             cri_vals0 = st.number_input('N for criteria: {} > N'.format(cri_cols[0]),
                                           min_value = 0.01, value=cri_vals_def[0],step=0.05)
             cri_vals1 = st.number_input('N for criteria: {} > N'.format(cri_cols[1]),
