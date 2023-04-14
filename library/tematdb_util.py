@@ -240,15 +240,21 @@ def get_Ts_TEPZT(mat):
     return Ts_TEP, Ts_ZT, Ts_TEPZT
 
 def get_ZTs_interp(mat, Ts_TEPZT):
-
     alpha_interp = mat.Seebeck(Ts_TEPZT)
     rho_interp   = mat.elec_resi(Ts_TEPZT)
     kappa_interp = mat.thrm_cond(Ts_TEPZT)    
     ZT_TEP_on_Ts_TEPZT    = alpha_interp*alpha_interp/rho_interp/kappa_interp*Ts_TEPZT
-    ZT_raw_on_Ts_TEPZT    = mat.ZT(Ts_TEPZT)
-    
-
+    ZT_raw_on_Ts_TEPZT    = mat.ZT(Ts_TEPZT)   
     return ZT_raw_on_Ts_TEPZT, ZT_TEP_on_Ts_TEPZT
+
+def get_Zs_interp(mat, Ts_TEPZT):
+    alpha_interp = mat.Seebeck(Ts_TEPZT)
+    rho_interp   = mat.elec_resi(Ts_TEPZT)
+    kappa_interp = mat.thrm_cond(Ts_TEPZT)    
+    Z_TEP_on_Ts_TEPZT    = alpha_interp*alpha_interp/rho_interp/kappa_interp
+    Z_raw_on_Ts_TEPZT    = mat.ZT(Ts_TEPZT) / Ts_TEPZT   
+    return Z_raw_on_Ts_TEPZT, Z_TEP_on_Ts_TEPZT
+
 
 def tep_generator_from_excel_files(sampleid, interp_opt):    
     # version = "v1.0.0"
