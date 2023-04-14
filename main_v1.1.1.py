@@ -187,7 +187,7 @@ with st.sidebar:
         
         df_db_csv = pd.read_csv("./data_csv/"+file_tematdb_db_csv)        
         
-        df_db_extended_csv = pd.read_csv("./data_csv/"+"tematdb_v1.1.0_extendedTEPset.csv")
+        df_db_extended_csv = pd.read_csv("./data_csv/"+"tematdb_v1.1.0_extendedTEPset.csv" )
         df_db_extended_csv = df_db_extended_csv[ df_db_extended_csv.is_Temp_in_autoTcTh_range ]
         df_db_extended_csv = df_db_extended_csv[ df_db_extended_csv.is_Temp_in_ZT_author_declared ] 
         
@@ -235,7 +235,7 @@ with st.sidebar:
             st.markdown("Minimum value: 0.1. The data larger than ths will be filtered out")
             cri_cols = ['davgZT', 'dpeakZT','Linf',
                         'Linf_over_avgZT','Linf_over_peakZT']
-            cri_vals_def = [0.1, 0.1, 0.1, 0.3, 0.3]
+            cri_vals_def = [0.10, 0.10, 0.10, 0.25, 0.10]
             cri_vals0 = st.number_input('N for criteria: {} > N'.format(cri_cols[0]),
                                           min_value = 0.01, value=cri_vals_def[0],step=0.05)
             cri_vals1 = st.number_input('N for criteria: {} > N'.format(cri_cols[1]),
@@ -268,6 +268,7 @@ with tab1:
     st.header(":blue[I. DB MetaData Table]")
     with st.expander("See material metadata:", expanded=True):
         st.write(df_db_meta)                
+        # st.dataframe(df_db_meta)     
 
     st.header(":blue[II. Material Data] ")
     st.subheader(":red[[db_mode  = :blue[{}]]]".format(db_mode) + ":red[[sampleid = :blue[{}]]]".format( sampleid))
@@ -434,39 +435,43 @@ with tab2:
     st.write(df_db_error)
     
     st.header(":blue[Error Analysis based on ZT self-consistency]")
-    with st.expander("See analysis:", expanded=True): 
+    # with st.expander("See analysis:", expanded=True): 
         # cri_cols = ['davgZT', 'dpeakZT','Linf']
         # cri_vals = [0.10, 0.10, 0.10]
         
         
         
-        df_db_error_criteria_list = []
-        error_criteria_list = []
-        sampleid_list_df_db_error_criteria = []
-        df4_db_error_filtered = df_db_error.copy()
-        df5_db_error_anomaly = df_db_error.copy()
-        for cri_col, cri_val in zip(cri_cols, cri_vals):   
-            error_criteria = np.abs( df_db_error[cri_col] ) > cri_val 
-            error_criteria_list.append(error_criteria.copy())
-            df_db_error_criteria = df_db_error[ error_criteria ].copy()
-            df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
-            df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
+    df_db_error_criteria_list = []
+    error_criteria_list = []
+    sampleid_list_df_db_error_criteria = []
+    df4_db_error_filtered = df_db_error.copy()
+    df5_db_error_anomaly = df_db_error.copy()
+    for cri_col, cri_val in zip(cri_cols, cri_vals):   
+        error_criteria = np.abs( df_db_error[cri_col] ) > cri_val 
+        error_criteria_list.append(error_criteria.copy())
+        df_db_error_criteria = df_db_error[ error_criteria ].copy()
+        df_db_error_criteria.sort_values(by=cri_col,ascending=False, inplace=True)
+        df_db_error_criteria.set_index('sampleid', inplace=True, drop=False)
+        
+        df4_db_error_filtered = df4_db_error_filtered[ np.abs( df4_db_error_filtered[cri_col] ) < cri_val ].copy()
+        df5_db_error_anomaly  = df5_db_error_anomaly[ np.abs( df5_db_error_anomaly[cri_col] ) < cri_val ].copy()
+        
+        cri_str = ":red[Noisy samples: {} > {:.2f}]".format(cri_col, cri_val)
+        st.subheader(cri_str)
+        st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
+        with st.expander("See error table for this criteria:", expanded=False): 
             
-            df4_db_error_filtered = df4_db_error_filtered[ np.abs( df4_db_error_filtered[cri_col] ) < cri_val ].copy()
-            df5_db_error_anomaly  = df5_db_error_anomaly[ np.abs( df5_db_error_anomaly[cri_col] ) < cri_val ].copy()
-            
-            cri_str = ":red[Noisy samples: {} > {:.2f}]".format(cri_col, cri_val)
-            st.subheader(cri_str)
-            st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
             st.write(df_db_error_criteria)
             df_db_error_criteria_list.append(df_db_error_criteria)
             sampleid_list = df_db_error_criteria['sampleid'].unique().tolist()
             st.write(sampleid_list)
             sampleid_list_df_db_error_criteria = sampleid_list_df_db_error_criteria + sampleid_list
-            del df_db_error_criteria
+        del df_db_error_criteria
     
     st.header(":blue[DB Before Filtering]")
-    with st.expander("See plots:", expanded=True):   
+    num_sampleids_before_filtering = len( df_db_error[ df_db_error.TF_mat_complete ].sampleid.unique() )
+    st.markdown("There are :blue[{}] sampleids.".format(num_sampleids_before_filtering))
+    with st.expander("See plots:", expanded=False):   
         df1 = df_db_extended_csv
         df2 = df_db_error
         
@@ -614,18 +619,19 @@ with tab2:
     fig_before_filter = draw3QQ(df1,df2)
     st.pyplot(fig_before_filter)
 
-    st.header(":blue[DB After Filtering]")
-    with st.expander("See plots:", expanded=True):   
-        df4_db_error_filtered['notNoisy'] = True
-        df3_df_db_extended_csv_filtered = pd.merge( df_db_extended_csv, df4_db_error_filtered[['sampleid','notNoisy']], on='sampleid', how='left')
-        df3_df_db_extended_csv_filtered = df3_df_db_extended_csv_filtered[ df3_df_db_extended_csv_filtered.notNoisy == True ].copy()
-        
-        df3, df4 = df3_df_db_extended_csv_filtered, df4_db_error_filtered
-        
-        st.subheader(":red[ZT Error Correlation]")
-        draw_ZT_error_correlation(df4)
 
-    
+
+    st.header(":blue[DB After Filtering]")
+    df4_db_error_filtered['notNoisy'] = True
+    df3_df_db_extended_csv_filtered = pd.merge( df_db_extended_csv, df4_db_error_filtered[['sampleid','notNoisy']], on='sampleid', how='left')
+    df3_df_db_extended_csv_filtered = df3_df_db_extended_csv_filtered[ df3_df_db_extended_csv_filtered.notNoisy == True ].copy()
+    df3, df4 = df3_df_db_extended_csv_filtered, df4_db_error_filtered
+
+    num_sampleids_after_filtering = len( df4[ df4.TF_mat_complete ].sampleid.unique() )
+    st.markdown("There are :blue[{}] sampleids.".format(num_sampleids_after_filtering))
+    with st.expander("See plots:", expanded=False):           
+        st.subheader(":red[ZT Error Correlation]")
+        draw_ZT_error_correlation(df4)    
     st.subheader(":red[QQ analysis]")
     fig_after_filter = draw3QQ(df3,df4)
     st.pyplot(fig_after_filter)      
