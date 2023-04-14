@@ -38,12 +38,13 @@ from library.dev_performance import set_singleleg_device, run_pykeri, draw_dev_p
 
 formattedDate, yyyymmdd, HHMMSS = br.now_string()
 
-st.set_page_config(page_title="teMatDb_v1.1.1")
+st.set_page_config(page_title="teMatDb")
 
 
-st.title("teMatDb (ver1.1.1) new")
+st.title("teMatDb")
 st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]ase")
-st.markdown("- High quality thermoelectric (TE) database (DB).")
+st.markdown("- High quality thermoelectric (TE) database (DB), teMatDb (ver1.1.1)")
+st.markdown("- That can be used for data analytics, machine learning and AI")
 
 
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Material Property", 
@@ -171,7 +172,7 @@ with tab6:
 ## Sidebar, choose DB, choose mat
 with st.sidebar:
     st.subheader(":red[Select TE Mat. DB]")
-    options =['teMatDb','teMatDb_expt','Starrydata2 (not work yet)']
+    options =['teMatDb','teMatDb_expt','Starrydata2']
     db_mode = st.radio( 'Select :red[Thermoelectric DB] :',
         options=options, index=0,
         label_visibility="collapsed")    
@@ -196,59 +197,66 @@ with st.sidebar:
                'Corresponding_author_main', 'Corresponding_author_institute',
                'Corresponding_author_email', 'figure_number_of_targetZT',
                'label_of_targetZT_in_figure', 'figure_label_description',]
+        df_db_error0['Linf_over_avgZT']  = df_db_error0.Linf / df_db_error0.avgZT_TEP_on_Ts_TEP
+        df_db_error0['Linf_over_peakZT'] = df_db_error0.Linf / df_db_error0.peakZT_TEP_on_Ts_TEP
         df_db_error = pd.merge( df_db_error0, df_db_meta[err_cols], on='sampleid', how='left')
-        df_db_error.index = list(df_db_error.sampleid.copy())
+        df_db_error.index = list(df_db_error.sampleid.copy())        
+         
+        ## choose sampleid
+        st.subheader(":red[Select sampleid]")
+        option_sampleid = list(df_db_meta['sampleid'].unique())
+        sampleid = st.selectbox('Select or type sampleid:',
+            option_sampleid, index=0,
+            label_visibility="collapsed")   
         
+        df_db_meta_sampleid = df_db_meta[ df_db_meta['sampleid'] == sampleid]
+        doi = df_db_meta_sampleid.DOI.iloc[0]
+        link_doi = '[DOI: {}](http://www.doi.org/{})'.format(doi,doi)
+        st.markdown(link_doi, unsafe_allow_html=True)
+        corrauthor = df_db_meta_sampleid.Corresponding_author_main.iloc[0]
+        corrinstitute  = df_db_meta_sampleid.Corresponding_author_institute.iloc[0] 
+        corremail  = df_db_meta_sampleid.Corresponding_author_email.iloc[0] 
+        st.markdown("First Author: :red[need to update]")
+        st.markdown("Correspondence: {}".format(corrauthor)) 
+        st.markdown("Institute: {}".format(corrinstitute))         
+        
+        interp_opt = {MatProp.OPT_INTERP:MatProp.INTERP_LINEAR,\
+                      MatProp.OPT_EXTEND_LEFT_TO:1,          # ok to 0 Kelvin
+                      MatProp.OPT_EXTEND_RIGHT_BY:2000}        # ok to +50 Kelvin from the raw data
+        TF_mat_complete, mat = tep_generator_from_excel_files(sampleid, interp_opt)
+    
+        label_db = "DB: {}".format(db_mode)
+        label_sampleid = "sampleid: {}".format(sampleid)
+        label_doi = '[DOI: {}]'.format(doi)    
+        
+        st.subheader(":red[Data Filter]")
+        
+        with st.form("Data Error Filter Criteria"):
+            st.markdown("Minimum value: 0.1. The data larger than ths will be filtered out")
+            cri_cols = ['davgZT', 'dpeakZT','Linf',
+                        'Linf_over_avgZT','Linf_over_peakZT']
+            cri_vals_def = [0.1, 0.1, 0.1, 0.3, 0.3]
+            cri_vals0 = st.number_input('N for criteria: {} > N'.format(cri_cols[0]),
+                                          min_value = 0.01, value=cri_vals_def[0],step=0.05)
+            cri_vals1 = st.number_input('N for criteria: {} > N'.format(cri_cols[1]),
+                                          min_value = 0.01, value=cri_vals_def[1],step=0.05)
+            cri_vals2 = st.number_input('N for criteria: {} > N'.format(cri_cols[2]),
+                                          min_value = 0.01, value=cri_vals_def[2],step=0.05)        
+            cri_vals3 = st.number_input('N for criteria: {} > N'.format(cri_cols[3]),
+                                          min_value = 0.01, value=cri_vals_def[3],step=0.05)  
+            cri_vals4 = st.number_input('N for criteria: {} > N'.format(cri_cols[4]),
+                                          min_value = 0.01, value=cri_vals_def[4],step=0.05)  
+            submitted = st.form_submit_button("Submit criteria")
+            
+            if submitted:                   
+                cri_vals = [cri_vals0, cri_vals1, cri_vals2, cri_vals3, cri_vals4]
+            else:
+                cri_vals = cri_vals_def
+
+    elif (db_mode == 'Starrydata2'):
+        pass
     else:
         pass
-      
-    ## choose sampleid
-    st.subheader(":red[Select sampleid]")
-    option_sampleid = list(df_db_meta['sampleid'].unique())
-    sampleid = st.selectbox('Select or type sampleid:',
-        option_sampleid, index=0,
-        label_visibility="collapsed")   
-    
-    df_db_meta_sampleid = df_db_meta[ df_db_meta['sampleid'] == sampleid]
-    doi = df_db_meta_sampleid.DOI.iloc[0]
-    link_doi = '[DOI: {}](http://www.doi.org/{})'.format(doi,doi)
-    st.markdown(link_doi, unsafe_allow_html=True)
-    corrauthor = df_db_meta_sampleid.Corresponding_author_main.iloc[0]
-    corrinstitute  = df_db_meta_sampleid.Corresponding_author_institute.iloc[0] 
-    corremail  = df_db_meta_sampleid.Corresponding_author_email.iloc[0] 
-    st.markdown("Correspondence: {}, Email: {}".format(corrauthor, corremail)) 
-    st.markdown("Institute: {}".format(corrinstitute)) 
-    # st.markdown("Email: {}  ".format( corremail)) 
-    
-    
-    interp_opt = {MatProp.OPT_INTERP:MatProp.INTERP_LINEAR,\
-                  MatProp.OPT_EXTEND_LEFT_TO:1,          # ok to 0 Kelvin
-                  MatProp.OPT_EXTEND_RIGHT_BY:2000}        # ok to +50 Kelvin from the raw data
-    TF_mat_complete, mat = tep_generator_from_excel_files(sampleid, interp_opt)
-
-    label_db = "DB: {}".format(db_mode)
-    label_sampleid = "sampleid: {}".format(sampleid)
-    label_doi = '[DOI: {}]'.format(doi)    
-    
-    st.subheader(":red[Data Filter]")
-    
-    with st.form("Data Error Filter Criteria"):
-        st.markdown("Minimum value: 0.1. The data larger than ths will be filtered out")
-        cri_cols = ['davgZT', 'dpeakZT','Linf']
-        cri_vals_def = [0.1, 0.1, 0.1]
-        cri_vals0 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[0]),
-                                      min_value = 0.01, value=cri_vals_def[0],step=0.05)
-        cri_vals1 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[1]),
-                                      min_value = 0.01, value=cri_vals_def[1],step=0.05)
-        cri_vals2 = st.number_input('Insert a number (N) for criteria: {} > N'.format(cri_cols[2]),
-                                      min_value = 0.01, value=cri_vals_def[2],step=0.05)        
-        submitted = st.form_submit_button("Submit criteria")
-        
-        if submitted:                   
-            cri_vals = [cri_vals0, cri_vals1, cri_vals2]
-        else:
-            cri_vals = cri_vals_def
-
 
 ###############
 ###############
@@ -324,7 +332,6 @@ with tab1:
         st.write(':red[TEP is invalid because TEP set is incomplete..]')    
     if TF_mat_complete:   
         try:
-            # file_tematdb_error_csv = "error_20230407_231304.csv"
             df_db_error_sampleid = df_db_error[ df_db_error['sampleid'] == sampleid]
         except:
             st.markdown('Yet, no error reports')
@@ -423,12 +430,15 @@ with tab1:
 with tab2:     
 
     st.header(":blue[DataFrame for Error Table]")
+
     st.write(df_db_error)
     
     st.header(":blue[Error Analysis based on ZT self-consistency]")
     with st.expander("See analysis:", expanded=True): 
         # cri_cols = ['davgZT', 'dpeakZT','Linf']
         # cri_vals = [0.10, 0.10, 0.10]
+        
+        
         
         df_db_error_criteria_list = []
         error_criteria_list = []
@@ -447,7 +457,6 @@ with tab2:
             
             cri_str = ":red[Noisy samples: {} > {:.2f}]".format(cri_col, cri_val)
             st.subheader(cri_str)
-            # st.header(":red[Noisy samples: {} > {}]".format(cri_col, cri_val))  
             st.markdown("There are :red[{}] noisy-cases.".format(len(df_db_error_criteria)) )
             st.write(df_db_error_criteria)
             df_db_error_criteria_list.append(df_db_error_criteria)
@@ -564,10 +573,6 @@ with tab2:
         Xlim3 = Xlim2 *1.1
         ax.set_ylim(-Xlim3,Xlim3)
         ax.set_xlim(-4.5,4.5)
-        # ax.xaxis.set_ticks_position('both')
-        # ax.yaxis.set_ticks_position('both')
-        # ax.xaxis.set_tick_params(which='both', labelbottom=True)
-        # ax.yaxis.set_tick_params(which='both', labelbottom=True)
         # ax.legend(loc=2)
         ax.set_title(tep_title)
 
@@ -583,12 +588,7 @@ with tab2:
         Xlim3 = Xlim2 *1.1
         ax.set_ylim(-Xlim3,Xlim3)
         ax.set_xlim(-4.5,4.5)
-        # ax.xaxis.set_ticks_position('both')
-        # ax.yaxis.set_ticks_position('both')
-        # ax.xaxis.set_tick_params(which='both', labelbottom=True)
-        # ax.yaxis.set_tick_params(which='both', labelbottom=True)
         ax.set_title(tep_title)
-        # ax.subplots_adjust(left=0.2, bottom=0.2,  right=0.8, top=0.8, wspace=0.3, hspace=0.35)
     
         ax = ax3
         tep_title = r'Q-Q plot of peak-$ZT$ deviation'
@@ -601,12 +601,7 @@ with tab2:
         Xlim3 = Xlim2 *1.1
         ax.set_ylim(-Xlim3,Xlim3)
         ax.set_xlim(-4.5,4.5)
-        # ax.xaxis.set_ticks_position('both')
-        # ax.yaxis.set_ticks_position('both')
-        # ax.xaxis.set_tick_params(which='both', labelbottom=True)
-        # ax.yaxis.set_tick_params(which='both', labelbottom=True)
         ax.set_title(tep_title)
-        # fig.tight_layout()
         
         for ax in (ax1, ax2, ax3):
             ax.xaxis.set_ticks_position('both')
@@ -634,7 +629,3 @@ with tab2:
     st.subheader(":red[QQ analysis]")
     fig_after_filter = draw3QQ(df3,df4)
     st.pyplot(fig_after_filter)      
-
-    # fig_after_filter = draw3QQ(df3,df4)
-    # st.pyplot(fig_after_filter)    
-
