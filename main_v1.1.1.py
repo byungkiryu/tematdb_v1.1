@@ -197,8 +197,8 @@ with st.sidebar:
                'Corresponding_author_main', 'Corresponding_author_institute',
                'Corresponding_author_email', 'figure_number_of_targetZT',
                'label_of_targetZT_in_figure', 'figure_label_description',]
-        df_db_error0['Linf_over_avgZT']  = df_db_error0.Linf / df_db_error0.avgZT_TEP_on_Ts_TEP
-        df_db_error0['Linf_over_peakZT'] = df_db_error0.Linf / df_db_error0.peakZT_TEP_on_Ts_TEP
+        # df_db_error0['Linf_over_avgZT']  = df_db_error0.Linf / df_db_error0.avgZT_TEP_on_Ts_TEP
+        # df_db_error0['Linf_over_peakZT'] = df_db_error0.Linf / df_db_error0.peakZT_TEP_on_Ts_TEP
         df_db_error = pd.merge( df_db_error0, df_db_meta[err_cols], on='sampleid', how='left')
         df_db_error.index = list(df_db_error.sampleid.copy())        
          
