@@ -162,10 +162,12 @@ with tab5:
     st.subheader("Network")
     import plotly.express as px
     df_map = pd.read_excel("./map/"+"map_info_dataframe.xlsx",sheet_name='test')    
+    hover_data = ['City', 'site', 'who', 'Collaboration']
     fig = px.scatter_mapbox(df_map, lat="latitude", lon="longitude", 
                             text = 'who',  
                             color = 'color',
-                            # # size = 'size',
+                            # size = 'size',
+                            hover_data = hover_data ,
                             # opacity = 0.5,
                             center = {'lat':35.190691,'lon':128.717674},
                             zoom=1)
@@ -309,24 +311,31 @@ with st.sidebar:
         st.subheader(":red[Data Filter]")
         
         with st.form("Data Error Filter Criteria"):
-            st.markdown("Minimum value: 0.01. The data larger than ths will be filtered out")
-            cri_cols = ['davgZT', 'dpeakZT','Linf',
+            st.markdown("Inconsistent TEP data with respect to ZT will be filtered out. (Min. value: 0.02)")
+            cri_cols = ['davgZT', 'dpeakZT',
+                        'Linf', 'L2',
                         'Linf_over_avgZT','Linf_over_peakZT']
-            cri_vals_def = [0.10, 0.10, 0.10, 0.20, 0.20]
-            cri_vals0 = st.number_input('N for criteria: {} > N'.format(cri_cols[0]),
-                                          min_value = 0.01, value=cri_vals_def[0],step=0.05)
-            cri_vals1 = st.number_input('N for criteria: {} > N'.format(cri_cols[1]),
-                                          min_value = 0.01, value=cri_vals_def[1],step=0.05)
-            cri_vals2 = st.number_input('N for criteria: {} > N'.format(cri_cols[2]),
-                                          min_value = 0.01, value=cri_vals_def[2],step=0.05)        
-            cri_vals3 = st.number_input('N for criteria: {} > N'.format(cri_cols[3]),
-                                          min_value = 0.01, value=cri_vals_def[3],step=0.05)  
-            cri_vals4 = st.number_input('N for criteria: {} > N'.format(cri_cols[4]),
-                                          min_value = 0.01, value=cri_vals_def[4],step=0.05)  
-            submitted = st.form_submit_button("Submit criteria")
+            cri_vals_def = [0.10, 0.10, 0.10, 0.10, 0.20, 0.20]
+            cri_vals0 = st.number_input('Criteria0: (Avg ZT) err. {} > N'.format(cri_cols[0]),
+                                          min_value = 0.02, value=cri_vals_def[0],step=0.05)
+            cri_vals1 = st.number_input('Criteria1: (Peak ZT) err: {} > N'.format(cri_cols[1]),
+                                          min_value = 0.02, value=cri_vals_def[1],step=0.05)
+            cri_vals2 = st.number_input('Criteria2: Max (ZT err): {} > N'.format(cri_cols[2]),
+                                          min_value = 0.02, value=cri_vals_def[2],step=0.05)        
+            cri_vals3 = st.number_input('Criteria3: L2 (ZT err, std): {} > N'.format(cri_cols[3]),
+                                          min_value = 0.02, value=cri_vals_def[3],step=0.05)  
+            cri_vals4 = st.number_input('Criteria4: Max (ZT err)/(avg ZT): {} > N'.format(cri_cols[4]),
+                                          min_value = 0.02, value=cri_vals_def[4],step=0.05) 
+            cri_vals5 = st.number_input('Criteria5: Max (ZT err)/(peak ZT): {} > N'.format(cri_cols[5]),
+                                          min_value = 0.02, value=cri_vals_def[5],step=0.05)  
+            
+            submitted = st.form_submit_button("Submit Criterias.")
             
             if submitted:                   
-                cri_vals = [cri_vals0, cri_vals1, cri_vals2, cri_vals3, cri_vals4]
+                cri_vals = [cri_vals0, cri_vals1, 
+                            cri_vals2, cri_vals3, 
+                            cri_vals4, cri_vals5,
+                            ]
             else:
                 cri_vals = cri_vals_def
 
