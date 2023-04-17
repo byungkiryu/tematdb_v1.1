@@ -201,7 +201,7 @@ with tab6:
     df_map_keri = df_map[0:1]
     # df_map2 = pd.concat([df_map_keri]*1000+[df_map])
     # df_map2 = df_map2.reset_index(drop=False)
-    st.map(df_map_keri, zoom=10)
+    st.map(df_map_keri, zoom=11)
     
     with st.expander("See Members:", expanded=False):   
         st.subheader("SuDong Park, Dr. (박수동)")
