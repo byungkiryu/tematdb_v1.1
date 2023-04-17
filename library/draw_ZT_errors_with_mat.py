@@ -37,7 +37,7 @@ from matplotlib import pyplot as plt
 formattedDate, yyyymmdd, HHMMSS = br.now_string()
 
 def draw3QQ(df1,df2, label_db="", label_sampleid="", label_doi=""):
-    suptitle = "{} {} {}".format(label_db, label_sampleid, label_doi)     
+    suptitle = "{}".format(label_db)     
     figsize = (13,4) 
     # fig, axs = plt.subplots(1,3,figsize=figsize, sharex=True, constrained_layout=True )  
     fig, axs = plt.subplots(1,3,figsize=figsize, sharex=True,  )  
@@ -93,7 +93,7 @@ def draw3QQ(df1,df2, label_db="", label_sampleid="", label_doi=""):
     return fig
 
 def draw4QQ(df1,df2, label_db="", label_sampleid="", label_doi=""):
-    suptitle = "{} {} {}".format(label_db, label_sampleid, label_doi)        
+    suptitle = "{}".format(label_db)        
     figsize = (8,8)        
     fig, axs  = plt.subplots(2,2, figsize=figsize, sharex=True)
     fig.subplots_adjust(wspace=0.1, hspace=0.3)
