@@ -316,17 +316,17 @@ with st.sidebar:
                         'Linf', 'L2',
                         'Linf_over_avgZT','Linf_over_peakZT']
             cri_vals_def = [0.10, 0.10, 0.10, 0.10, 0.20, 0.20]
-            cri_vals0 = st.number_input('Criteria0: (Avg ZT) err. {} > N'.format(cri_cols[0]),
+            cri_vals0 = st.number_input('Crit0: (Avg ZT) err. {} > N'.format(cri_cols[0]),
                                           min_value = 0.02, value=cri_vals_def[0],step=0.05)
-            cri_vals1 = st.number_input('Criteria1: (Peak ZT) err: {} > N'.format(cri_cols[1]),
+            cri_vals1 = st.number_input('Crit1: (Peak ZT) err: {} > N'.format(cri_cols[1]),
                                           min_value = 0.02, value=cri_vals_def[1],step=0.05)
-            cri_vals2 = st.number_input('Criteria2: Max (ZT err): {} > N'.format(cri_cols[2]),
+            cri_vals2 = st.number_input('Crit2: Max (ZT err): {} > N'.format(cri_cols[2]),
                                           min_value = 0.02, value=cri_vals_def[2],step=0.05)        
-            cri_vals3 = st.number_input('Criteria3: L2 (ZT err, std): {} > N'.format(cri_cols[3]),
+            cri_vals3 = st.number_input('Crit3: L2 (ZT err, std): {} > N'.format(cri_cols[3]),
                                           min_value = 0.02, value=cri_vals_def[3],step=0.05)  
-            cri_vals4 = st.number_input('Criteria4: Max (ZT err)/(avg ZT): {} > N'.format(cri_cols[4]),
+            cri_vals4 = st.number_input('Crit4: Max (ZT err)/(avg ZT): {} > N'.format(cri_cols[4]),
                                           min_value = 0.02, value=cri_vals_def[4],step=0.05) 
-            cri_vals5 = st.number_input('Criteria5: Max (ZT err)/(peak ZT): {} > N'.format(cri_cols[5]),
+            cri_vals5 = st.number_input('Crit5: Max (ZT err)/(peak ZT): {} > N'.format(cri_cols[5]),
                                           min_value = 0.02, value=cri_vals_def[5],step=0.05)  
             
             submitted = st.form_submit_button("Submit Criterias.")
