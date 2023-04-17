@@ -177,8 +177,7 @@ with tab5:
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     st.plotly_chart(fig)
 
-    df_map = pd.read_excel("./map/"+"map_info_dataframe.xlsx",sheet_name='test')    
-    st.map(df_map, zoom=1)
+
         
         
         
@@ -194,7 +193,14 @@ with tab5:
     
 with tab6:   
 
+
+    
     st.header(":blue[KERI Thermoelectric Science TEAM]")
+    df_map_keri = df_map[0:1]
+    # df_map2 = pd.concat([df_map_keri]*1000+[df_map])
+    # df_map2 = df_map2.reset_index(drop=False)
+    st.map(df_map_keri, zoom=10)
+    
     with st.expander("See Members:", expanded=False):   
         st.subheader("SuDong Park, Dr. (박수동)")
         st.subheader("Byungki Ryu, Dr. (류병기)")
@@ -206,6 +212,7 @@ with tab6:
         st.subheader("Sungjin Park, Dr. (박성진)")
     
     st.header(":blue[Visit KERI. How to Come?]")
+
 
     with st.expander("See Maps:", expanded=False):        
         st.markdown("")
