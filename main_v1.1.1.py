@@ -41,7 +41,7 @@ formattedDate, yyyymmdd, HHMMSS = br.now_string()
 st.set_page_config(page_title="teMatDb")
 
 
-st.title("teMatDb _")
+st.title("teMatDb")
 st.subheader(":blue[t]hermo:blue[e]lectric :blue[Mat]erial :blue[D]ata:blue[b]ase")
 st.markdown("- High quality thermoelectric (TE) database (DB), teMatDb (ver1.1.1)")
 st.markdown("- That can be used for data analytics, machine learning and AI")
