@@ -255,7 +255,8 @@ with st.sidebar:
         label_visibility="collapsed")    
     
     if (db_mode == 'teMatDb'):
-        file_tematdb_metadata_csv = "_tematdb_metadata_v1.1.0-20230412_brjcsjp.xlsx"
+        #file_tematdb_metadata_csv = "_tematdb_metadata_v1.1.0-20230412_brjcsjp.xlsx"
+        file_tematdb_metadata_csv = "_tematdb_metadata_v1.1.1.xlsx"
         file_tematdb_db_csv       =  "tematdb_v1.1.0_completeTEPset.csv"
         
         df_db_meta0 = pd.read_excel("./"+file_tematdb_metadata_csv, sheet_name='list', )
