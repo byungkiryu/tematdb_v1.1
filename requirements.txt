@@ -2,7 +2,8 @@
 #conda install scipy=1.10.1#pyhton==3.9.16
 #spyder=5.3.3
 #numpy, openpyxl, pandas, scipy, pyparsing, matplotlib
-openpyxl==3.0.10
+#openpyxl==3.0.10
+openpyxl==3.1.2
 pyparsing==3.0.9
 scipy==1.10.1
 plotly==5.9.0
