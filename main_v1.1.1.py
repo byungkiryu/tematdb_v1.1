@@ -157,7 +157,7 @@ with tab4:
     st.markdown("[4] Chung, Jaywan, Byungki Ryu, and Hyowon Seo. “Unique Temperature Distribution and Explicit Efficiency Formula for One-Dimensional Thermoelectric Generators under Constant Seebeck Coefficients.” Nonlinear Analysis: Real World Applications 68 (December 1, 2022): 103649. https://doi.org/10.1016/j.nonrwa.2022.103649.")
     st.markdown("[5] Ryu, Byungki, Jaywan Chung, Masaya Kumagai, Tomoya Mato, Yuki Ando, Sakiko Gunji, Atsumi Tanaka, et al. “Best Thermoelectric Efficiency of Ever-Explored Materials.” iScience 26, no. 4 (April 21, 2023): 106494. https://doi.org/10.1016/j.isci.2023.106494.")
     st.markdown("[6] Ryu, Byungki, Jaywan Chung, and SuDong Park. “(arXiv) Thermoelectric Algebra Made Simple for Thermoelectric Generator Module Performance Prediction under Constant Seebeck-Coefficient Approximation.” arXiv, October 8, 2024. https://doi.org/10.48550/arXiv.2410.04405.")
-    st.markdown("[7] Ryu, Byungki, Seunghyun Oh, Wabi Demeke, Jaywan Chung, Jongho Park, Nirma Kumari, Aadil Fayaz Wani, Seunghwa Ryu, and SuDong Park. “(arXiv) Wiedemann-Franz Law and Thermoelectric Inequalities: Effective ZT and Single-Leg Efficiency Overestimation.” arXiv, November 4, 2024.")
+    st.markdown("[7] Ryu, Byungki, Seunghyun Oh, Wabi Demeke, Jaywan Chung, Jongho Park, Nirma Kumari, Aadil Fayaz Wani, Seunghwa Ryu, and SuDong Park. “(arXiv) Wiedemann-Franz Law and Thermoelectric Inequalities: Effective ZT and Single-Leg Efficiency Overestimation.” arXiv, November 4, 2024. https://doi.org/10.48550/arXiv.2411.01635.")
     st.write("(Style: Chicago Manual of Style 17th edition (full note))")
  
 with tab5:
