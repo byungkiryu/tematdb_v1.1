@@ -3,9 +3,10 @@
 #spyder=5.3.3
 #numpy, openpyxl, pandas, scipy, pyparsing, matplotlib
 #openpyxl==3.0.10
+python==3.11
 openpyxl==3.1.2
 pyparsing==3.0.9
-#scipy==1.10.1
-scipy==1.9.0
+scipy==1.10.1
+#scipy==1.9.0
 plotly==5.9.0
 matplotlib==3.7.1
