@@ -52,7 +52,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Material Property",
                                                  "Data Distribution",
                                                  "Theory & Equations", 
                                                  "Link", 
-                                                 "Contact"])
+                                                 "KERI"])
 
 
 with tab3:  
