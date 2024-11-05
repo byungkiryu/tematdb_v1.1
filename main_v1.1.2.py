@@ -156,6 +156,10 @@ with tab4:
     st.markdown("[3] Ryu, Byungki, Jaywan Chung, and SuDong Park. “Thermoelectric Degrees of Freedom Determining Thermoelectric Efficiency.” iScience 24, no. 9 (September 24, 2021): 102934. https://doi.org/10.1016/j.isci.2021.102934.")
     st.markdown("[4] Chung, Jaywan, Byungki Ryu, and Hyowon Seo. “Unique Temperature Distribution and Explicit Efficiency Formula for One-Dimensional Thermoelectric Generators under Constant Seebeck Coefficients.” Nonlinear Analysis: Real World Applications 68 (December 1, 2022): 103649. https://doi.org/10.1016/j.nonrwa.2022.103649.")
     st.markdown("[5] Ryu, Byungki, Jaywan Chung, Masaya Kumagai, Tomoya Mato, Yuki Ando, Sakiko Gunji, Atsumi Tanaka, et al. “Best Thermoelectric Efficiency of Ever-Explored Materials.” iScience 26, no. 4 (April 21, 2023): 106494. https://doi.org/10.1016/j.isci.2023.106494.")
+    st.markdown("[6] Ryu, Byungki, Jaywan Chung, and SuDong Park. “(arXiv) Thermoelectric Algebra Made Simple for Thermoelectric Generator Module Performance Prediction under Constant Seebeck-Coefficient Approximation.” arXiv, October 8, 2024. https://doi.org/10.48550/arXiv.2410.04405.")
+    st.markdown("[7] Ryu, Byungki, Seunghyun Oh, Wabi Demeke, Jaywan Chung, Jongho Park, Nirma Kumari, Aadil Fayaz Wani, Seunghwa Ryu, and SuDong Park. “(arXiv) Wiedemann-Franz Law and Thermoelectric Inequalities: Effective ZT and Single-Leg Efficiency Overestimation.” arXiv, November 4, 2024.")
+
+        
     st.write("(Style: Chicago Manual of Style 17th edition (full note))")
  
 with tab5:
@@ -212,10 +216,12 @@ with tab6:
         st.markdown("mathematics, PDE, heat equation, machine learning thermoelectric data")
         st.subheader("Jongho Park, Mr. (박종호)")
         st.markdown("PbTe, GeTe, materials synthesis, module fabrications, characterization")
-        st.subheader("Ji-Hee Son, Ms. (손지희)")
+        st.subheader("JiHui Son, Ms. (손지희)")
         st.markdown("BiTe, materials synthesis")
         st.subheader("Jeongin Jang, Miss (장정인)")
         st.markdown("BiTe, Higher-manganese silicide (HMS), materials synthesis")
+        st.subheader("Seunghyun Oh, Miss (오승현)")
+        st.markdown("Thermoelectric, Module and System, Design and Analysis")
         st.subheader("Nirma Kumari, Post-doc. (2025.10~)")
         st.markdown("materials synthesis, leg measurements")
         st.subheader("Aadil Fayaz Wani, Post-doc. (2025.10~)")
