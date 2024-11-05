@@ -226,7 +226,7 @@ with tab6:
         st.markdown("Nanoscale thermoelectric transport calcualtions")
     with st.expander("See Alumni Members:", expanded=True):   
         st.subheader("Jae Ki Lee, Dr. (이재기, postdoc)")
-        st.subheader("Min-Ho Lee, Dr. (박성진, postdoc)")
+        st.subheader("Min-Ho Lee, Dr. (이민호, postdoc)")
         st.subheader("Sungjin Park, Dr. (박성진, postdoc)")
         
         
