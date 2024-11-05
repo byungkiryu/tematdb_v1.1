@@ -214,7 +214,31 @@ with tab6:
         st.subheader("Ji-Hee Son, Ms. (손지희)")
         st.subheader("Jeongin Jang, Miss (장정인)")
         st.subheader("Sungjin Park, Dr. (박성진)")
-    
+
+    with st.expander("See Members:", expanded=True):   
+        st.subheader("SuDong Park, Dr. (박수동)")
+        st.markdown("TE science opinion leader")
+        st.subheader("Byungki Ryu, Dr. (류병기)")
+        st.markdown("solid state physics, first-principles calculations, thermoelectrics, materials, devices, efficiency, defects, alloys, interfaces, semiconductors")
+        st.subheader("Jaywan Chung, Dr. (정재환)")
+        st.markdown("mathematics, PDE, heat equation, machine learning thermoelectric data")
+        st.subheader("Jongho Park, Mr. (박종호)")
+        st.markdown("PbTe, GeTe, materials synthesis, module fabrications, characterization")
+        st.subheader("JiHui Son, Ms. (손지희)")
+        st.markdown("BiTe, materials synthesis")
+        st.subheader("Jeongin Jang, Miss (장정인)")
+        st.markdown("BiTe, Higher-manganese silicide (HMS), materials synthesis")
+        st.subheader("Seunghyun Oh, Miss (오승현)")
+        st.markdown("Thermoelectric, Module and System, Design and Analysis")
+        st.subheader("Nirma Kumari, Post-doc. (2025.10~)")
+        st.markdown("materials synthesis, leg measurements")
+        st.subheader("Aadil Fayaz Wani, Post-doc. (2025.10~)")
+        st.markdown("Nanoscale thermoelectric transport calcualtions")
+    with st.expander("See Alumni Members:", expanded=True):   
+        st.subheader("Sungjin Park, Dr. (박성진, postdoc)")
+        st.markdown("Defects in thermoelectrics")
+        
+        
     st.header(":blue[Visit KERI. How to Come?]")
 
 
