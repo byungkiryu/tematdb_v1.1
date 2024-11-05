@@ -205,20 +205,10 @@ with tab6:
     # df_map2 = df_map2.reset_index(drop=False)
     st.map(df_map_keri, zoom=12)
     
-    with st.expander("See Members:", expanded=False):   
-        st.subheader("SuDong Park, Dr. (박수동)")
-        st.subheader("Byungki Ryu, Dr. (류병기)")
-        st.markdown("byungkiryu at keri.re.kr")
-        st.subheader("Jaywan Chung, Dr. (정재환)")
-        st.subheader("Jongho Park, Mr. (박종호)")
-        st.subheader("Ji-Hee Son, Ms. (손지희)")
-        st.subheader("Jeongin Jang, Miss (장정인)")
-        st.subheader("Sungjin Park, Dr. (박성진)")
-
     with st.expander("See Members:", expanded=True):   
         st.subheader("SuDong Park, Dr. (박수동)")
         st.markdown("TE science opinion leader")
-        st.subheader("Byungki Ryu, Dr. (류병기)")
+        st.subheader("Byungki Ryu, Dr. (류병기) (2013.12~)")
         st.markdown("solid state physics, first-principles calculations, thermoelectrics, materials, devices, efficiency, defects, alloys, interfaces, semiconductors")
         st.subheader("Jaywan Chung, Dr. (정재환)")
         st.markdown("mathematics, PDE, heat equation, machine learning thermoelectric data")
@@ -228,15 +218,16 @@ with tab6:
         st.markdown("BiTe, materials synthesis")
         st.subheader("Jeongin Jang, Miss (장정인)")
         st.markdown("BiTe, Higher-manganese silicide (HMS), materials synthesis")
-        st.subheader("Seunghyun Oh, Miss (오승현)")
+        st.subheader("Seunghyun Oh, Miss (오승현) (2023.~")
         st.markdown("Thermoelectric, Module and System, Design and Analysis")
-        st.subheader("Nirma Kumari, Post-doc. (2025.10~)")
+        st.subheader("Nirma Kumari, Post-doc. (2024.10~)")
         st.markdown("materials synthesis, leg measurements")
-        st.subheader("Aadil Fayaz Wani, Post-doc. (2025.10~)")
+        st.subheader("Aadil Fayaz Wani, Post-doc. (2024.10~)")
         st.markdown("Nanoscale thermoelectric transport calcualtions")
     with st.expander("See Alumni Members:", expanded=True):   
+        st.subheader("Jae Ki Lee, Dr. (이재기, postdoc)")
+        st.subheader("Min-Ho Lee, Dr. (박성진, postdoc)")
         st.subheader("Sungjin Park, Dr. (박성진, postdoc)")
-        st.markdown("Defects in thermoelectrics")
         
         
     st.header(":blue[Visit KERI. How to Come?]")
