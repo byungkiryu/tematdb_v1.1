@@ -210,12 +210,9 @@ with tab6:
         st.markdown("- TE scientist and opinion leader")
         st.markdown("- metallurigst")
         st.subheader("Byungki Ryu, Dr. (류병기) (2013.12~)")
-        st.markdown("- condensed-matter physics, solid state physics, first-principles calculations")
-        st.markdown("- first-principles calculations for materials design and device physics")
-        st.markdown("- thermoelectrics: from atoms and materials to devices and energy conversion")
-        st.markdown("- thermoelectric efficiency theory")
-        st.markdown("- defects in semiconductors and their interfaces")
-        st.markdown("- complex defect clusters in thermoelectrics")
+        st.markdown("- condensed-matter physics, solid state physics, first-principles calculations for materials design and device physics")
+        st.markdown("- thermoelectrics: from materials to energy conversion devices, efficiency theory")
+        st.markdown("- defects in semiconductors, their interfaces; defect complexes in thermoelectrics")
         st.subheader("Jaywan Chung, Dr. (정재환)")
         st.markdown("- mathematics, PDE, heat equation, machine learning thermoelectric data")
         st.markdown("- diffusion theory")
@@ -241,7 +238,7 @@ with tab6:
     with st.expander("International Visitors:", expanded=True):   
         st.subheader("Johannes de Boor, Prof. Dr., ")    
         st.markdown("- from German Aerospace Center (DLR), Germany")    
-        st.markdown("- 2024-Nov-24 to 2024-Dec-10")    
+        st.markdown("- 2024-Nov-24 to 2024-Dec-10")  
         
     st.header(":blue[Visit KERI. How to Come?]")
 
