@@ -223,10 +223,8 @@ with tab6:
         st.subheader("Jeongin Jang, Miss (장정인)")
         st.markdown("- BiTe, Higher-manganese silicide (HMS), materials synthesis")
         st.subheader("Seunghyun Oh, Miss (오승현) (2023.~")
-        st.markdown("- Thermoelectric Designer: from Modules to Systems")
-        st.markdown("- FEM analysis")
-        st.markdown("- Thermoelectric cooling module: theory and experiments")
-        st.markdown("- Thermoelectric circuits")
+        st.markdown("- Thermoelectric Designer: from Modules to Systems; ; thermoelectric circuits")
+        st.markdown("- Thermoelectric cooling module: theory, FEM analysis and experiments")
         st.subheader("Nirma Kumari, Post-doc. (2024.10~)")
         st.markdown("- Thermoelectric materials, leg measurements")
         st.subheader("Aadil Fayaz Wani, Post-doc. (2024.10~)")
@@ -238,7 +236,7 @@ with tab6:
     with st.expander("International Visitors:", expanded=True):   
         st.subheader("Johannes de Boor, Prof. Dr., ")    
         st.markdown("- from German Aerospace Center (DLR), Germany")    
-        st.markdown("- 2024-Nov-24 to 2024-Dec-10")  
+        st.markdown("- 2024-Nov-24 to 2024-Dec-10")   
         
     st.header(":blue[Visit KERI. How to Come?]")
 
