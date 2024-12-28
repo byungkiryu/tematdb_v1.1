@@ -447,15 +447,15 @@ with tab1:
                 st.markdown("**:red[Warning: peak ZT mismatch is larger than 0.1]**")
             else:
                 st.markdown("**:blue[Self-consistent: peak ZT mismatch is smaller than, 0.1]**")
-            st.markdown(":black[Raw peak-ZT (from published figure data): peak-ZT raw = {:6.2f}]".format(df_db_error_sampleid.peakZT_raw_on_Ts_ZT.iloc[0]))
-            st.markdown(":black[Calculated peak-ZT (from TEP interpolated): peak-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.peakZT_TEP_on_Ts_TEP.iloc[0])) 
+            st.markdown(":red[Raw peak-ZT (from published figure data): peak-ZT raw = {:6.2f}]".format(df_db_error_sampleid.peakZT_raw_on_Ts_ZT.iloc[0]))
+            st.markdown(":red[Calculated peak-ZT (from TEP interpolated): peak-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.peakZT_TEP_on_Ts_TEP.iloc[0])) 
                 
             if ( np.abs( df_db_error_sampleid.davgZT.iloc[0] ) > 0.1 ):
                 st.markdown("**:red[Warning: average ZT mismatch is larger than 0.1]**")
             else:
                 st.markdown("**:blue[Self-consistent: average ZT mismatch is smaller than, 0.1]**")
-            st.markdown(":black[Raw avg-ZT (from published figure data): avg-ZT raw = {:6.2f}]".format(df_db_error_sampleid.avgZT_raw_on_Ts_ZT.iloc[0]))
-            st.markdown(":black[Calculated avg-ZT reevaulated (from TEP interpolated): avg-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.avgZT_TEP_on_Ts_TEP.iloc[0])) 
+            st.markdown(":red[Raw avg-ZT (from published figure data): avg-ZT raw = {:6.2f}]".format(df_db_error_sampleid.avgZT_raw_on_Ts_ZT.iloc[0]))
+            st.markdown(":red[Calculated avg-ZT reevaulated (from TEP interpolated): avg-ZT TEP = {:6.2f}]".format(df_db_error_sampleid.avgZT_TEP_on_Ts_TEP.iloc[0])) 
         
             with st.expander("How to calculateSee Lp errors and etc...:", expanded=False):        
                 st.markdown(":red[error was calculated blah blbah using following equations (to be filled later)]")
